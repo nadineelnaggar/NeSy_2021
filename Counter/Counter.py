@@ -93,7 +93,7 @@ class Counter(nn.Module):
         self.out = nn.Sigmoid()
 
     def forward(self,x,previous_count):
-        x = self.fc1(x)
+        # x = self.fc1(x)
         combined = torch.cat((x,previous_count))
         x = self.counter(combined)
         previous_count=x
