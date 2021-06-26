@@ -7,14 +7,14 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
-num_epochs = 10000
+num_epochs = 1000
 num_classes = 2
 output_size = 1
 input_size=1
 
 labels = ['<= 0', '> 0']
 
-X = [1, -1, 0.0001, -10000000, 2, -3]
+X = [1, -1, 0.00001, -0.3, 0.1, -0.5]
 y = ['> 0', '<= 0', '> 0', '<= 0', '> 0', '<= 0']
 
 
@@ -73,8 +73,8 @@ class Net(nn.Module):
     def __init__(self, input_size, output_size):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size,output_size)
-        self.fc1.weight = nn.Parameter(torch.tensor([1],dtype=torch.float32))
-        self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        self.fc1.weight = nn.Parameter(torch.tensor(1,dtype=torch.float32))
+        self.fc1.bias = nn.Parameter(torch.tensor(1,dtype=torch.float32))
         self.sig = nn.Sigmoid()
 
     def forward(self,x):
@@ -85,13 +85,14 @@ model = Net(input_size,output_size)
 print(model.fc1.weight)
 print(model.fc1.bias)
 print(model.fc1.weight.grad)
-print(model(torch.tensor(1,dtype=torch.float32)))
-print(model(torch.tensor(-50000,dtype=torch.float32)))
-print(model(torch.tensor(-1,dtype=torch.float32)))
-print(model(torch.tensor(0,dtype=torch.float32)))
-print(model(torch.tensor(100000000,dtype=torch.float32)))
-print(model(torch.tensor(0.001,dtype=torch.float32)))
-print(model(torch.tensor(0.01,dtype=torch.float32)))
+print('model(1) = ',model(torch.tensor(1,dtype=torch.float32)))
+print('model(-5000) = ',model(torch.tensor(-50000,dtype=torch.float32)))
+print('model(-1) = ',model(torch.tensor(-1,dtype=torch.float32)))
+print('model(0) = ',model(torch.tensor(0,dtype=torch.float32)))
+print('model(100000000) = ',model(torch.tensor(100000000,dtype=torch.float32)))
+print('model(-0.001) = ',model(torch.tensor(-0.001,dtype=torch.float32)))
+print('model(0.01) = ',model(torch.tensor(0.01,dtype=torch.float32)))
+
 
 
 
@@ -109,79 +110,82 @@ initial_biases = []
 final_biases = []
 epochs = []
 
+def train():
+    for epoch in range(num_epochs):
+        #these first few lines are for plotting later on
 
-for epoch in range(num_epochs):
-    #these first few lines are for plotting later on
-
-    initial_biases.append(model.fc1.bias.clone())
-    initial_weights.append(model.fc1.weight.clone())
-    # initial_gradients.append(model.fc1.weight.grad.clone())
-    num_correct = 0
-    current_loss = 0
-    epochs.append(epoch)
-    confusion = torch.zeros(num_classes,num_classes)
-    expected_classes = []
-    predicted_classes = []
-
-
-    # going through the training set and performing online training.
-    for i in range(len(X_train)):
-        optimiser.zero_grad()
-        correct = False
-        target_tensor = y_train[i]
-        target_label = y_train_notencoded[i]
-        input_sentence = X_train_notencoded[i]
-        input_tensor = X_train[i]
-        output_tensor = model(input_tensor)
-
-        loss = criterion(output_tensor,target_tensor)
-        loss.backward()
-        optimiser.step()
-        output_label, output_label_index = classFromOutput(output_tensor)
-        if output_label==target_label:
-            num_correct+=1
-            correct=True
-        current_loss+=loss.item()
-        expected_classes.append(target_label)
-        predicted_classes.append(output_label)
+        initial_biases.append(model.fc1.bias.clone())
+        initial_weights.append(model.fc1.weight.clone())
+        # initial_gradients.append(model.fc1.weight.grad.clone())
+        num_correct = 0
+        current_loss = 0
+        epochs.append(epoch)
+        confusion = torch.zeros(num_classes,num_classes)
+        expected_classes = []
+        predicted_classes = []
 
 
-        if epoch == (num_epochs-1):
-            # print('input number = ',input_sentence)
-            print('////////////////////////////////////')
-            print('input tensor = ',input_tensor)
-            print('predicted class = ',output_label)
-            print('actual class = ',target_label)
-            if correct==True:
-                print('Correct Prediction')
-            else:
-                print('Incorrect Prediction')
+        # going through the training set and performing online training.
+        for i in range(len(X_train)):
+            optimiser.zero_grad()
+            correct = False
+            target_tensor = y_train[i]
+            target_label = y_train_notencoded[i]
+            input_sentence = X_train_notencoded[i]
+            input_tensor = X_train[i]
+            output_tensor = model(input_tensor)
+
+            loss = criterion(output_tensor,target_tensor)
+            loss.backward()
+            optimiser.step()
+            output_label, output_label_index = classFromOutput(output_tensor)
+            if output_label==target_label:
+                num_correct+=1
+                correct=True
+            current_loss+=loss.item()
+            expected_classes.append(target_label)
+            predicted_classes.append(output_label)
 
 
-    accuracy = num_correct/len(X_train)*100
-    epoch_accuracies.append(accuracy)
-    all_losses.append(current_loss/len(X_train))
-    final_weights.append(model.fc1.weight.clone())
-    final_biases.append(model.fc1.bias.clone())
-    # final_gradients.append(model.fc1.weight.grad.clone())
-    print('Accuracy for epoch',epoch,'=',accuracy,'%')
+            if epoch == (num_epochs-1):
+                # print('input number = ',input_sentence)
+                print('////////////////////////////////////')
+                print('input tensor = ',input_tensor)
+                print('predicted class = ',output_label)
+                print('actual class = ',target_label)
+                if correct==True:
+                    print('Correct Prediction')
+                else:
+                    print('Incorrect Prediction')
 
-    if (epoch+1)%20==0:
-        print('weight = ', model.fc1.weight)
-        print('bias = ', model.fc1.bias)
-        print('gradient = ', model.fc1.weight.grad)
 
-    if epoch==(num_epochs-1):
-        print('weight = ',model.fc1.weight)
-        print('bias = ',model.fc1.bias)
-        print('gradient = ',model.fc1.weight.grad)
-        print('confusion matrix for training set\n', confusion)
-        print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
-        conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-        heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-        bottom1, top1 = heat.get_ylim()
-        heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-        print('confusion matrix for training set = \n', conf_matrix)
-        plt.savefig('Test_Sigmoid_Confusion_Matrix_Training.png')
-        plt.show()
+        accuracy = num_correct/len(X_train)*100
+        epoch_accuracies.append(accuracy)
+        all_losses.append(current_loss/len(X_train))
+        final_weights.append(model.fc1.weight.clone())
+        final_biases.append(model.fc1.bias.clone())
+        # final_gradients.append(model.fc1.weight.grad.clone())
+        print('Accuracy for epoch',epoch,'=',accuracy,'%')
 
+        if (epoch+1)%20==0:
+            print('weight = ', model.fc1.weight)
+            print('bias = ', model.fc1.bias)
+            print('gradient = ', model.fc1.weight.grad)
+            print('input tensor gradient = ',input_tensor.grad)
+            print('loss = ',loss.item())
+
+        if epoch==(num_epochs-1):
+            print('weight = ',model.fc1.weight)
+            print('bias = ',model.fc1.bias)
+            print('gradient = ',model.fc1.weight.grad)
+            print('confusion matrix for training set\n', confusion)
+            print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
+            conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+            heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+            bottom1, top1 = heat.get_ylim()
+            heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+            print('confusion matrix for training set = \n', conf_matrix)
+            # plt.savefig('Test_Sigmoid_Confusion_Matrix_Training.png')
+            plt.show()
+
+train()
