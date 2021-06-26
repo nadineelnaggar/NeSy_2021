@@ -7,7 +7,7 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 
-num_epochs = 1000
+num_epochs = 10000
 num_classes = 2
 output_size = 1
 input_size=1
@@ -30,11 +30,11 @@ def encode_sentence(sentence):
     #         pos = vocab.index(char)
     #         rep[index][0][pos] = 1
     # rep.requires_grad_(True)
-    rep = torch.tensor(sentence,dtype=torch.float32,requires_grad=True)
+    rep = torch.tensor([sentence],dtype=torch.float32,requires_grad=True)
     return rep
 
 def encode_labels(label):
-    return torch.tensor(labels.index(label), dtype=torch.float32)
+    return torch.tensor([labels.index(label)], dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []
@@ -73,11 +73,14 @@ class Net(nn.Module):
     def __init__(self, input_size, output_size):
         super(Net, self).__init__()
         self.fc1 = nn.Linear(input_size,output_size)
-        self.fc1.weight = nn.Parameter(torch.tensor(1,dtype=torch.float32))
-        self.fc1.bias = nn.Parameter(torch.tensor(1,dtype=torch.float32))
+        self.fc1.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
+        self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.sig = nn.Sigmoid()
 
     def forward(self,x):
+        # print('x.shape = ',x.shape)
+        x = self.fc1(x)
+        # print('x shape = ',x.shape)
         x = self.sig(x)
         return x
 
@@ -85,13 +88,13 @@ model = Net(input_size,output_size)
 print(model.fc1.weight)
 print(model.fc1.bias)
 print(model.fc1.weight.grad)
-print('model(1) = ',model(torch.tensor(1,dtype=torch.float32)))
-print('model(-5000) = ',model(torch.tensor(-50000,dtype=torch.float32)))
-print('model(-1) = ',model(torch.tensor(-1,dtype=torch.float32)))
-print('model(0) = ',model(torch.tensor(0,dtype=torch.float32)))
-print('model(100000000) = ',model(torch.tensor(100000000,dtype=torch.float32)))
-print('model(-0.001) = ',model(torch.tensor(-0.001,dtype=torch.float32)))
-print('model(0.01) = ',model(torch.tensor(0.01,dtype=torch.float32)))
+print('model(1) = ',model(torch.tensor([1],dtype=torch.float32)))
+print('model(-5000) = ',model(torch.tensor([-50000],dtype=torch.float32)))
+print('model(-1) = ',model(torch.tensor([-1],dtype=torch.float32)))
+print('model(0) = ',model(torch.tensor([0],dtype=torch.float32)))
+print('model(100000000) = ',model(torch.tensor([100000000],dtype=torch.float32)))
+print('model(-0.001) = ',model(torch.tensor([-0.001],dtype=torch.float32)))
+print('model(0.01) = ',model(torch.tensor([0.01],dtype=torch.float32)))
 
 
 
@@ -120,7 +123,7 @@ def train():
         num_correct = 0
         current_loss = 0
         epochs.append(epoch)
-        confusion = torch.zeros(num_classes,num_classes)
+        # confusion = torch.zeros(num_classes,num_classes)
         expected_classes = []
         predicted_classes = []
 
@@ -164,21 +167,21 @@ def train():
         all_losses.append(current_loss/len(X_train))
         final_weights.append(model.fc1.weight.clone())
         final_biases.append(model.fc1.bias.clone())
-        # final_gradients.append(model.fc1.weight.grad.clone())
+        final_gradients.append(model.fc1.weight.grad.clone())
         print('Accuracy for epoch',epoch,'=',accuracy,'%')
 
         if (epoch+1)%20==0:
             print('weight = ', model.fc1.weight)
             print('bias = ', model.fc1.bias)
             print('gradient = ', model.fc1.weight.grad)
-            print('input tensor gradient = ',input_tensor.grad)
+            # print('input tensor gradient = ',input_tensor.grad)
             print('loss = ',loss.item())
 
         if epoch==(num_epochs-1):
             print('weight = ',model.fc1.weight)
             print('bias = ',model.fc1.bias)
             print('gradient = ',model.fc1.weight.grad)
-            print('confusion matrix for training set\n', confusion)
+            print('input tensor gradient = ',input_tensor.grad)
             print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
             conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
             heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
