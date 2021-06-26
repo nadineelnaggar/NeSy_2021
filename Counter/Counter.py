@@ -11,7 +11,7 @@ import seaborn as sns
 
 
 
-num_epochs = 100
+num_epochs = 10000
 max_length = 2
 
 input_size = 2
@@ -37,19 +37,19 @@ def classFromOutput(output):
 
 def encode_sentence(sentence):
     rep = torch.zeros(max_length, 1, n_letters)
-    if len(sentence) < max_length:
-        for index, char in enumerate(sentence):
-            pos = vocab.index(char)
-            rep[index + 2][0][pos] = 1
-    else:
-        for index, char in enumerate(sentence):
-            pos = vocab.index(char)
-            rep[index][0][pos] = 1
+    # if len(sentence) < max_length:
+    #     for index, char in enumerate(sentence):
+    #         pos = vocab.index(char)
+    #         rep[index][0][pos] = 1
+    # else:
+    for index, char in enumerate(sentence):
+        pos = vocab.index(char)
+        rep[index][0][pos] = 1
     rep.requires_grad_(True)
     return rep
 
 def encode_labels(label):
-    return torch.tensor(labels.index(label), dtype=torch.float32)
+    return torch.tensor([labels.index(label)], dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []
@@ -83,13 +83,16 @@ class Counter(nn.Module):
     def __init__(self, input_size, hidden_size, counter_input_size, counter_output_size, output_size):
         super(Counter, self).__init__()
         self.hidden_size = hidden_size
-        self.fc1 = nn.Linear(input_size,hidden_size, bias=False)
+        self.fc1 = nn.Linear(input_size,hidden_size)
         self.fc1.weight = nn.Parameter(torch.eye(2))
-        self.counter = nn.Linear(counter_input_size,counter_output_size,bias=False)
+        self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        self.counter = nn.Linear(counter_input_size,counter_output_size)
         # self.counter.weight = nn.Parameter(torch.tensor([[1,0,1],[0,-1,1]],dtype=torch.float32))
         self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
-        self.fc2 = nn.Linear(counter_output_size,output_size,bias=False)
-        self.fc2.weight = nn.Parameter(torch.tensor([40],dtype=torch.float32))
+        self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        self.fc2 = nn.Linear(counter_output_size,output_size)
+        self.fc2.weight = nn.Parameter(torch.tensor([[40]],dtype=torch.float32))
+        self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.out = nn.Sigmoid()
 
     def forward(self,x,previous_count):
@@ -218,10 +221,16 @@ for epoch in range(num_epochs):
     if (epoch + 1) % 10 == 0:
         print('input layer weights = ', model.fc1.weight)
         print('input layer weight gradient = ', model.fc1.weight.grad)
+        print('input layer bias = ',model.fc1.bias)
+        print('counter weights = ',model.counter.weight)
+        print('counter gradients = ',model.counter.weight.grad)
+        print('counter bias = ',model.counter.bias)
         print('output layer weights  = ', model.fc2.weight)
         print('output layer weight gradient = ', model.fc2.weight.grad)
-        print('counter weights = ',model.counter.weight)
-        print('counter weight gradients = ',model.counter.weight.grad)
+        print('output layer bias = ',model.fc2.bias)
+
+        # print('counter weights = ',model.counter.weight)
+        # print('counter weight gradients = ',model.counter.weight.grad)
 
     print('Accuracy for epoch ', epoch, '=', accuracy, '%')
     all_losses.append(current_loss / len(X_train))
@@ -230,7 +239,7 @@ for epoch in range(num_epochs):
     accuracies.append(accuracy)
     weights_input_layer.append(model.fc1.weight.clone())
     weights_output_layer.append(model.fc2.weight.clone())
-    gradients_input_layer.append(model.fc1.weight.grad.clone())
+    # gradients_input_layer.append(model.fc1.weight.grad.clone())
     gradients_output_layer.append(model.fc2.weight.grad.clone())
     weights_counter.append(model.counter.weight.clone())
     gradients_counter.append(model.counter.weight.grad.clone())
@@ -245,7 +254,7 @@ for epoch in range(num_epochs):
         bottom1, top1 = heat.get_ylim()
         heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
         print('confusion matrix for training set = \n', conf_matrix)
-        plt.savefig('Counter_Sigmoid_Confusion_Matrix_Training.png')
+        # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Training.png')
         plt.show()
         if i == len(X_train) - 1:
             print('input tensor = ', input_tensor)
@@ -264,17 +273,17 @@ for i in range(len(weights_input_layer)):
     weights_input_layer[i] = weights_input_layer[i].detach().numpy()
     weights_output_layer[i] = weights_output_layer[i].detach().numpy()
     weights_counter[i] = weights_counter[i].detach().numpy()
-    gradients_input_layer[i] = gradients_input_layer[i].detach().numpy()
+    # gradients_input_layer[i] = gradients_input_layer[i].detach().numpy()
     gradients_output_layer[i] = gradients_output_layer[i].detach().numpy()
     gradients_counter[i] = gradients_counter[i].detach().numpy()
     weight_11_input_layer.append(weights_input_layer[i][0][0])
     weight_12_input_layer.append(weights_input_layer[i][0][1])
     weight_21_input_layer.append(weights_input_layer[i][1][0])
     weight_22_input_layer.append(weights_input_layer[i][1][1])
-    gradient_11_input_layer.append(gradients_input_layer[i][0][0])
-    gradient_12_input_layer.append(gradients_input_layer[i][0][1])
-    gradient_21_input_layer.append(gradients_input_layer[i][1][0])
-    gradient_22_input_layer.append(gradients_input_layer[i][1][1])
+    # gradient_11_input_layer.append(gradients_input_layer[i][0][0])
+    # gradient_12_input_layer.append(gradients_input_layer[i][0][1])
+    # gradient_21_input_layer.append(gradients_input_layer[i][1][0])
+    # gradient_22_input_layer.append(gradients_input_layer[i][1][1])
     weight_1_counter.append(weights_counter[i][0][0])
     weight_2_counter.append(weights_counter[i][0][1])
     weight_3_counter.append(weights_counter[i][0][2])
@@ -282,142 +291,142 @@ for i in range(len(weights_input_layer)):
     gradient_2_counter.append(gradients_counter[i][0][1])
     gradient_3_counter.append(gradients_counter[i][0][2])
 
-
-df1['weight_11_input_layer'] = weight_11_input_layer
-df1['weight_12_input_layer'] = weight_12_input_layer
-df1['weight_21_input_layer'] = weight_21_input_layer
-df1['weight_22_input_layer'] = weight_22_input_layer
-df1['gradient_11_input_layer'] = gradient_11_input_layer
-df1['gradient_12_input_layer'] = gradient_12_input_layer
-df1['gradient_21_input_layer'] = gradient_21_input_layer
-df1['gradient_22_input_layer'] = gradient_22_input_layer
-df1['weight_1_counter'] = weight_1_counter
-df1['weight_2_counter'] = weight_2_counter
-df1['weight_3_counter'] = weight_3_counter
-df1['gradient_1_counter'] = gradient_1_counter
-df1['gradient_2_counter'] = gradient_2_counter
-df1['gradient_3_counter'] = gradient_3_counter
-df1['weight_output_layer'] = weights_output_layer
-df1['gradient_output_layer'] = gradients_output_layer
-df1['accuracies'] = accuracies
-df1['losses'] = all_losses
-
-epochs = []
-for i in range(num_epochs):
-    epochs.append(i)
-
-fig = plt.figure()
-plt.plot(epochs, weight_11_input_layer, label='Input Layer Increment Weight 1 (W11)')
-plt.plot(epochs, weight_12_input_layer, label='Input Layer Increment Weight 2 (W12)')
-plt.plot(epochs, weight_21_input_layer, label='Input Layer Decrement Weight 1 (W21)')
-plt.plot(epochs, weight_22_input_layer, label='Input Layer Decrement Weight 2 (W22)')
-plt.xlabel('Epoch')
-plt.ylabel('Weight Value')
-plt.legend(loc='lower center')
-plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Weights.png')
-plt.show()
-
-fig2 = plt.figure()
-plt.plot(epochs, weight_1_counter, label='Counter Weight 1')
-plt.plot(epochs, weight_2_counter, label='Counter Weight 2')
-plt.plot(epochs, weight_3_counter, label='Counter Weight 3')
-plt.plot(epochs, weights_output_layer, label='Output Layer Weight ')
-plt.xlabel('Epoch')
-plt.ylabel('Weight Value')
-plt.legend(loc='lower center')
-fig.subplots_adjust(bottom=0.5)
-plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Weights.png')
-plt.show()
-
-fig3 = plt.figure()
-plt.plot(epochs, gradient_11_input_layer, label='Gradient for Increment Input 1')
-plt.plot(epochs, gradient_12_input_layer, label='Gradient for Increment Input 2')
-plt.plot(epochs, gradient_21_input_layer, label='Gradient for Decrement Input 1')
-plt.plot(epochs, gradient_22_input_layer, label='Gradient for Decrement Input 2')
-plt.xlabel('Epoch')
-plt.ylabel('Weight Gradient Value')
-plt.legend(loc='lower center')
-fig.subplots_adjust(bottom=0.5)
-plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Gradients.png')
-plt.show()
-
-
-fig3 = plt.figure()
-plt.plot(epochs, gradient_1_counter, label='Counter Weight Gradient 1')
-plt.plot(epochs, gradient_2_counter, label='Counter Weight Gradient 2')
-plt.plot(epochs, gradient_3_counter, label='Counter Weight Gradient 3')
-plt.xlabel('Epoch')
-plt.ylabel('Weight Gradient Value')
-plt.legend(loc='lower center')
-fig.subplots_adjust(bottom=0.5)
-plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Gradients.png')
-plt.show()
-
-fig4 = plt.figure()
-plt.plot(epochs, accuracies, label='Training Accuracies')
-plt.plot(epochs, all_losses, label='Losses')
-plt.xlabel('Epoch')
-plt.ylabel('Value')
-plt.legend(loc='lower center')
-fig.subplots_adjust(bottom=0.5)
-plt.savefig('Counter_Sigmoid_Plot_Accuracies_and_Losses.png')
-plt.show()
-
-
-df1.to_excel('Counter_Sigmoid.xlsx')
-
-weight_1 = []
-weight_2 = []
-u = []
-v = []
-
-for i in range(len(gradient_11_input_layer)):
-    if gradient_11_input_layer[i]!=0 or gradient_12_input_layer!=0:
-        weight_1.append(weight_11_input_layer[i])
-        weight_2.append(weight_12_input_layer[i])
-        u.append(gradient_11_input_layer[i])
-        v.append(gradient_12_input_layer[i])
-
-xaxis = np.arange(-2,2,0.2)
-yaxis=np.arange(-2,2,0.2)
-
-A, B = np.meshgrid(weight_1, weight_2)
-fig5, ax = plt.subplots()
-ax.quiver(A, B, u, v)
-ax.xaxis.set_ticks(xaxis)
-ax.yaxis.set_ticks(yaxis)
-plt.xticks(rotation=90)
-plt.xlabel('Input Layer Weight 11 (Increment Weight 1)')
-plt.ylabel('Input Layer Weight 12 (Increment Weight 2)')
-plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W11_W12.png')
-plt.show()
-
-
-weight_1 = []
-weight_2 = []
-u = []
-v = []
-
-for i in range(len(gradient_21_input_layer)):
-    if gradient_21_input_layer[i]!=0 or gradient_22_input_layer!=0:
-        weight_1.append(weight_21_input_layer[i])
-        weight_2.append(weight_22_input_layer[i])
-        u.append(gradient_21_input_layer[i])
-        v.append(gradient_22_input_layer[i])
-
-xaxis = np.arange(-2,2,0.2)
-yaxis=np.arange(-2,2,0.2)
-
-A, B = np.meshgrid(weight_1, weight_2)
-fig5, ax = plt.subplots()
-ax.quiver(A, B, u, v)
-ax.xaxis.set_ticks(xaxis)
-ax.yaxis.set_ticks(yaxis)
-plt.xticks(rotation=90)
-plt.xlabel('Input Layer Weight 21 (Decrement Weight 1)')
-plt.ylabel('Input Layer Weight 22 (Decrement Weight 2)')
-plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W21_W22.png')
-plt.show()
+#
+# df1['weight_11_input_layer'] = weight_11_input_layer
+# df1['weight_12_input_layer'] = weight_12_input_layer
+# df1['weight_21_input_layer'] = weight_21_input_layer
+# df1['weight_22_input_layer'] = weight_22_input_layer
+# # df1['gradient_11_input_layer'] = gradient_11_input_layer
+# # df1['gradient_12_input_layer'] = gradient_12_input_layer
+# # df1['gradient_21_input_layer'] = gradient_21_input_layer
+# # df1['gradient_22_input_layer'] = gradient_22_input_layer
+# df1['weight_1_counter'] = weight_1_counter
+# df1['weight_2_counter'] = weight_2_counter
+# df1['weight_3_counter'] = weight_3_counter
+# df1['gradient_1_counter'] = gradient_1_counter
+# df1['gradient_2_counter'] = gradient_2_counter
+# df1['gradient_3_counter'] = gradient_3_counter
+# df1['weight_output_layer'] = weights_output_layer
+# df1['gradient_output_layer'] = gradients_output_layer
+# df1['accuracies'] = accuracies
+# df1['losses'] = all_losses
+#
+# epochs = []
+# for i in range(num_epochs):
+#     epochs.append(i)
+#
+# fig = plt.figure()
+# plt.plot(epochs, weight_11_input_layer, label='Input Layer Increment Weight 1 (W11)')
+# plt.plot(epochs, weight_12_input_layer, label='Input Layer Increment Weight 2 (W12)')
+# plt.plot(epochs, weight_21_input_layer, label='Input Layer Decrement Weight 1 (W21)')
+# plt.plot(epochs, weight_22_input_layer, label='Input Layer Decrement Weight 2 (W22)')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Value')
+# plt.legend(loc='lower center')
+# # plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Weights.png')
+# plt.show()
+#
+# fig2 = plt.figure()
+# plt.plot(epochs, weight_1_counter, label='Counter Weight 1')
+# plt.plot(epochs, weight_2_counter, label='Counter Weight 2')
+# plt.plot(epochs, weight_3_counter, label='Counter Weight 3')
+# plt.plot(epochs, weights_output_layer, label='Output Layer Weight ')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Weights.png')
+# plt.show()
+#
+# fig3 = plt.figure()
+# plt.plot(epochs, gradient_11_input_layer, label='Gradient for Increment Input 1')
+# plt.plot(epochs, gradient_12_input_layer, label='Gradient for Increment Input 2')
+# plt.plot(epochs, gradient_21_input_layer, label='Gradient for Decrement Input 1')
+# plt.plot(epochs, gradient_22_input_layer, label='Gradient for Decrement Input 2')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Gradient Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Gradients.png')
+# plt.show()
+#
+#
+# fig3 = plt.figure()
+# plt.plot(epochs, gradient_1_counter, label='Counter Weight Gradient 1')
+# plt.plot(epochs, gradient_2_counter, label='Counter Weight Gradient 2')
+# plt.plot(epochs, gradient_3_counter, label='Counter Weight Gradient 3')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Gradient Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Gradients.png')
+# plt.show()
+#
+# fig4 = plt.figure()
+# plt.plot(epochs, accuracies, label='Training Accuracies')
+# plt.plot(epochs, all_losses, label='Losses')
+# plt.xlabel('Epoch')
+# plt.ylabel('Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Accuracies_and_Losses.png')
+# plt.show()
+#
+#
+# df1.to_excel('Counter_Sigmoid.xlsx')
+#
+# weight_1 = []
+# weight_2 = []
+# u = []
+# v = []
+#
+# for i in range(len(gradient_11_input_layer)):
+#     if gradient_11_input_layer[i]!=0 or gradient_12_input_layer!=0:
+#         weight_1.append(weight_11_input_layer[i])
+#         weight_2.append(weight_12_input_layer[i])
+#         u.append(gradient_11_input_layer[i])
+#         v.append(gradient_12_input_layer[i])
+#
+# xaxis = np.arange(-2,2,0.2)
+# yaxis=np.arange(-2,2,0.2)
+#
+# A, B = np.meshgrid(weight_1, weight_2)
+# fig5, ax = plt.subplots()
+# ax.quiver(A, B, u, v)
+# ax.xaxis.set_ticks(xaxis)
+# ax.yaxis.set_ticks(yaxis)
+# plt.xticks(rotation=90)
+# plt.xlabel('Input Layer Weight 11 (Increment Weight 1)')
+# plt.ylabel('Input Layer Weight 12 (Increment Weight 2)')
+# # plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W11_W12.png')
+# plt.show()
+#
+#
+# weight_1 = []
+# weight_2 = []
+# u = []
+# v = []
+#
+# for i in range(len(gradient_21_input_layer)):
+#     if gradient_21_input_layer[i]!=0 or gradient_22_input_layer!=0:
+#         weight_1.append(weight_21_input_layer[i])
+#         weight_2.append(weight_22_input_layer[i])
+#         u.append(gradient_21_input_layer[i])
+#         v.append(gradient_22_input_layer[i])
+#
+# xaxis = np.arange(-2,2,0.2)
+# yaxis=np.arange(-2,2,0.2)
+#
+# A, B = np.meshgrid(weight_1, weight_2)
+# fig5, ax = plt.subplots()
+# ax.quiver(A, B, u, v)
+# ax.xaxis.set_ticks(xaxis)
+# ax.yaxis.set_ticks(yaxis)
+# plt.xticks(rotation=90)
+# plt.xlabel('Input Layer Weight 21 (Decrement Weight 1)')
+# plt.ylabel('Input Layer Weight 22 (Decrement Weight 2)')
+# # plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W21_W22.png')
+# plt.show()
 
 
 
@@ -469,7 +478,7 @@ def test():
     heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
     bottom1, top1 = heat.get_ylim()
     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-    plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
     plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
