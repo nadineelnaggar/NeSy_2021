@@ -157,3 +157,4 @@ print(model(X_train[0][0][0],rec_counter_input,hidden1_rec_input,hidden2_rec_inp
 
 
 
+
