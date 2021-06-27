@@ -8,9 +8,10 @@ import seaborn as sns
 
 
 counter_input_size = 3
-output_size = 1
+output_size = 2
 counter_output_size = 1
 hidden_size = 1
+input_size = 1
 
 num_classes = 2
 num_epochs = 10000
@@ -26,25 +27,32 @@ n_letters = len(vocab)
 
 
 def classFromOutput(output):
-    if output.item() > 0.5:
-        category_i = 1
-    else:
-        category_i = 0
+    # if output.item() > 0.5:
+    #     category_i = 1
+    # else:
+    #     category_i = 0
+    # return labels[category_i], category_i
+    top_n, top_i = output.data.topk(1)  # Tensor out of Variable with .data
+    category_i = top_i[0]
     return labels[category_i], category_i
 
 def encode_sentence(sentence):
-    rep = torch.zeros(max_length, 1, n_letters)
+    rep = torch.zeros(max_length, 1, input_size)
     for index, char in enumerate(sentence):
         pos = vocab.index(char)
         if pos == 0:
-            rep[index][0][pos] = 1
+            rep[index][0] = 1
         elif pos == 1:
-            rep[index][0][pos] = -1
+            rep[index][0] = -1
     rep.requires_grad_(True)
     return rep
 
 def encode_labels(label):
-    return torch.tensor(labels.index(label), dtype=torch.float32)
+    # return torch.tensor(labels.index(label), dtype=torch.float32)
+    if label=='valid':
+        return torch.tensor([1,0],dtype=torch.float32)
+    elif label =='invalid':
+        return torch.tensor([0,1],dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []
@@ -84,7 +92,7 @@ class Net(nn.Module):
         self.counter = nn.Linear(counter_input_size,counter_output_size)
         # self.counter.weight = nn.Parameter(torch.eye(3))
         # self.counter.weight=nn.Parameter(torch.tensor([[1,0,0],[0,1,0],[1,1,1]],dtype=torch.float32))
-        self.counter.weight = nn.Parameter(torch.tensor([1,1,1],dtype=torch.float32))
+        self.counter.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
         self.counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
 
         #hidden layer has 2 inputs, one from the counter, one recurrent,
@@ -100,16 +108,17 @@ class Net(nn.Module):
         self.hidden2.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.relu2 = nn.ReLU()
         self.out = nn.Linear(2*hidden_size,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        self.out.weight = nn.Parameter(torch.tensor([[0,0],[1,1]],dtype=torch.float32))
+        self.out.bias = nn.Parameter(torch.tensor([0,0],dtype=torch.float32))
         self.sig = nn.Sigmoid()
+        self.softmax = nn.Softmax(dim=0)
 
     def forward(self,x, counter_rec_input, hidden1_rec_input, hidden2_rec_input, print_flag=False):
         if print_flag==True:
-            print('x = ',x)
-            print('counter_rec_input = ',counter_rec_input)
-            print('hidden1_rec_input = ',hidden1_rec_input)
-            print('hidden2_rec_input = ',hidden2_rec_input)
+            print('input x = ',x)
+            print('input counter_rec_input = ',counter_rec_input)
+            print('input hidden1_rec_input = ',hidden1_rec_input)
+            print('input hidden2_rec_input = ',hidden2_rec_input)
         counter_combined = torch.cat((x,counter_rec_input))
         if print_flag==True:
             print('counter_combined = ',counter_combined)
@@ -164,7 +173,8 @@ class Net(nn.Module):
         output = self.out(output)
         if print_flag==True:
             print('output before sigmoid = ',output)
-        output = self.sig(output)
+        # output = self.sig(output)
+        output = self.softmax(output)
         if print_flag==True:
             print('output after sigmoid = ',output)
         return output, counter_rec_output,hidden1_rec_output,hidden2_rec_output
@@ -247,13 +257,13 @@ def test_whole_dataset():
     bottom1, top1 = heat.get_ylim()
     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
-    plt.show()
+    # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
     return accuracy
 
 
-# print('test accuracy = ', test_whole_dataset())
+print('test accuracy = ', test_whole_dataset())
 
 
 
@@ -296,7 +306,8 @@ final_gradients_output = []
 
 learning_rate = 0.005
 # criterion = nn.MSELoss()
-criterion = nn.BCELoss() #binary cross entropy loss
+# criterion=nn.CrossEntropyLoss()
+criterion = nn.BCELoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 
 
@@ -332,6 +343,8 @@ def train():
             print('initial hidden2 weight = ', model.hidden2.weight)
             print('initial hidden2 bias = ', model.hidden2.bias)
             print('initial hidden2 gradient = ', model.hidden2.weight.grad)
+            print('initial output weight = ',model.out.weight)
+            print('initial output bias = ',model.out.bias)
 
         for i in range(len(X_train)):
 
@@ -353,7 +366,7 @@ def train():
 
             for j in range(input_tensor.size()[0]):
 
-                output_tensor, counter_rec, hidden1_rec,hidden2_rec = model(input_tensor[j].squeeze(),counter_rec,hidden1_rec,hidden2_rec)
+                output_tensor, counter_rec, hidden1_rec,hidden2_rec = model(input_tensor[j][0],counter_rec,hidden1_rec,hidden2_rec)
                 if print_flag==True:
                     print('counter rec = ',counter_rec)
                     print('hidden1_rec = ',hidden1_rec)
@@ -412,6 +425,9 @@ def train():
             print('hidden2 weight = ', model.hidden2.weight)
             print('hidden2 bias = ', model.hidden2.bias)
             print('hidden2 gradient = ', model.hidden2.weight.grad)
+            print('output weight = ',model.out.weight)
+            print('output bias = ',model.out.bias)
+            print('output gradient = ',model.out.weight.grad)
             print('loss = ',loss.item())
 
         if epoch==(num_epochs-1):
@@ -421,10 +437,10 @@ def train():
             bottom1, top1 = heat.get_ylim()
             heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
             print('confusion matrix for training set = \n', conf_matrix)
-            plt.show()
+            # plt.show()
             print(all_epoch_incorrect_guesses)
     plt.plot(epochs,all_losses)
-    plt.show()
+    # plt.show()
 
 train()
 
@@ -483,7 +499,7 @@ def test():
     bottom1, top1 = heat.get_ylim()
     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
-    plt.show()
+    # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
     return accuracy
