@@ -311,6 +311,7 @@ learning_rate = 0.005
 # criterion = nn.MSELoss()
 # criterion=nn.CrossEntropyLoss()
 criterion = nn.BCELoss()
+# criterion=nn.BCEWithLogitsLoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
 
