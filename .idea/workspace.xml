@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_3.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_3.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -177,7 +176,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="74336000" />
+      <workItem from="1624557572974" duration="74682000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -319,7 +318,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624836551867</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Testing different weights for the output layer in Dyck1_Counter_2.&#10;There are 2 different options [[0,0],[1,1]] and [[1,0],[1,1]]. Both work. First one gives 100% accuracy for all epochs. Second one gives 100% accuracy on all epochs except epoch 0, and always misclassifies &quot;()&quot; in epoch 0.">
+      <created>1624836884542</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1624836884542</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,17 +359,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_3.py</url>
-          <line>179</line>
+          <line>180</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_3.py</url>
-          <line>176</line>
+          <line>177</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_3.py</url>
-          <line>140</line>
+          <line>141</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>

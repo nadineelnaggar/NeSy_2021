@@ -11,6 +11,7 @@ import random
 """
 IGNORE THIS CODE, IT IS NOT WORKING :(
 Dimensionality errors need to be sorted out.
+figure out cross entropy loss also (regular cross entropy for binary classification not BCE)
 """
 
 counter_input_size = 3
