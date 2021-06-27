@@ -5,6 +5,8 @@ import sklearn
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 import seaborn as sns
+import random
+
 
 
 counter_input_size = 3
@@ -108,7 +110,8 @@ class Net(nn.Module):
         self.hidden2.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.relu2 = nn.ReLU()
         self.out = nn.Linear(2*hidden_size,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([[0,0],[1,1]],dtype=torch.float32))
+        self.out.weight = nn.Parameter(torch.tensor([[-1,0],[1,1]],dtype=torch.float32))
+        # self.out.weight = nn.Parameter(torch.tensor([[0,0],[1,1]],dtype=torch.float32))
         self.out.bias = nn.Parameter(torch.tensor([0,0],dtype=torch.float32))
         self.sig = nn.Sigmoid()
         self.softmax = nn.Softmax(dim=0)
@@ -309,16 +312,19 @@ learning_rate = 0.005
 # criterion=nn.CrossEntropyLoss()
 criterion = nn.BCELoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
+# optimiser=optim.Adam(model.parameters(),lr=learning_rate)
 
 
 def train():
     for epoch in range(num_epochs):
+        shuffle = True
         epoch_incorrect_guesses = []
         num_correct = 0
         current_loss = 0
         epochs.append(epoch)
         expected_classes = []
         predicted_classes = []
+
         print_flag=False
         initial_weights_counter.append(model.counter.weight.clone())
         # initial_gradients_counter.append(model.counter.weight.grad.clone())
@@ -332,6 +338,10 @@ def train():
         if epoch == (num_epochs-1):
             print_flag=True
         num_samples = len(X_train)
+        order = []
+        for x in range(num_samples):
+            order.append(x)
+        random.shuffle(order)
 
         if (epoch+1)%20==0 or epoch==0:
             print('initial counter weight = ', model.counter.weight)
@@ -350,10 +360,16 @@ def train():
 
             optimiser.zero_grad()
             correct = False
-            input_tensor = X_train[i]
-            target_tensor = y_train[i]
-            input_sentence = X_train_notencoded[i]
-            target_label = y_train_notencoded[i]
+            if shuffle==False:
+                input_tensor = X_train[i]
+                target_tensor = y_train[i]
+                input_sentence = X_train_notencoded[i]
+                target_label = y_train_notencoded[i]
+            elif shuffle==True:
+                input_tensor = X_train[order[i]]
+                target_tensor = y_train[order[i]]
+                input_sentence = X_train_notencoded[order[i]]
+                target_label = y_train_notencoded[order[i]]
             if print_flag==True:
                 print('/////////////////////////////////////////////////')
                 print('input_sentence = ',input_sentence)
