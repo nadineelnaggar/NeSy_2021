@@ -10,6 +10,7 @@ import random
 
 """
 IGNORE THIS CODE, IT IS NOT WORKING :(
+Dimensionality errors need to be sorted out.
 """
 
 counter_input_size = 3
