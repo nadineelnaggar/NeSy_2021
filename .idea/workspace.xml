@@ -177,7 +177,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="61585000" />
+      <workItem from="1624557572974" duration="64169000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -263,7 +263,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624749928879</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Updated Dyck1_Counter code. Tested whole dataset then trained.">
+      <created>1624819601847</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1624819601847</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +291,8 @@
     <MESSAGE value="Created folder for the counter code" />
     <MESSAGE value="Update the Test_Sigmoid code" />
     <MESSAGE value="Creating the Dyck 1 Counter folder and Dyck1_Counter code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Creating the Dyck 1 Counter folder and Dyck1_Counter code" />
+    <MESSAGE value="Updated Dyck1_Counter code. Tested whole dataset then trained." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated Dyck1_Counter code. Tested whole dataset then trained." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -354,7 +362,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Clipping.coverage" NAME="Counter_Clipping Coverage Results" MODIFIED="1624632244059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter.coverage" NAME="Dyck1_Counter Coverage Results" MODIFIED="1624819496850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter.coverage" NAME="Dyck1_Counter Coverage Results" MODIFIED="1624820824648" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Sigmoid_Test.coverage" NAME="Sigmoid_Test Coverage Results" MODIFIED="1624668448871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sigmoid Test" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Linear.coverage" NAME="Counter_Linear Coverage Results" MODIFIED="1624632113873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter.coverage" NAME="Counter Coverage Results" MODIFIED="1624745156089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

@@ -426,3 +426,66 @@ def train():
     plt.show()
 
 train()
+
+def test():
+    model.eval()
+    num_correct = 0
+    num_samples = len(X_test)
+    confusion = torch.zeros(num_classes, num_classes)
+    expected_classes = []
+    predicted_classes = []
+    correct_guesses = []
+    incorrect_guesses = []
+    print('////////////////////////////////////////')
+    print('TEST WHOLE DATASET')
+    with torch.no_grad():
+        for i in range(num_samples):
+            class_category = y_test_notencoded[i]
+            class_tensor = y_test[i]
+            input_sentence = X_test_notencoded[i]
+            input_tensor = X_test[i]
+
+            counter_rec = torch.tensor([0], dtype=torch.float32)
+            hidden1_rec = torch.tensor([0], dtype=torch.float32)
+            hidden2_rec = torch.tensor([0], dtype=torch.float32)
+
+            print('////////////////////////////////////////////')
+            print('Test sample = ', input_sentence)
+
+            for j in range(input_tensor.size()[0]):
+                print('input tensor[j][0] = ', input_tensor[j][0])
+
+                output, counter_rec,hidden1_rec,hidden2_rec = model(input_tensor[j][0],counter_rec,hidden1_rec,hidden2_rec,print_flag=True)
+                print('counter_rec = ',counter_rec)
+                print('hidden1_rec = ',hidden1_rec)
+                print('hidden2_rec = ',hidden2_rec)
+                print('output = ',output)
+
+            guess, guess_i = classFromOutput(output)
+            class_i = labels.index(class_category)
+            print('predicted class = ', guess)
+            print('actual class = ', class_category)
+            confusion[class_i][guess_i] += 1
+            predicted_classes.append(guess_i)
+            expected_classes.append(class_i)
+
+            if guess == class_category:
+                num_correct += 1
+                correct_guesses.append(input_sentence)
+            else:
+                incorrect_guesses.append(input_sentence)
+
+    accuracy = num_correct / num_samples * 100
+    print('confusion matrix for test set \n', confusion)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    bottom1, top1 = heat.get_ylim()
+    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    plt.show()
+    print('correct guesses in testing = ', correct_guesses)
+    print('incorrect guesses in testing = ', incorrect_guesses)
+    return accuracy
+
+
+print('test accuracy = ', test())
