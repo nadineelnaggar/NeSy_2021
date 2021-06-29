@@ -17,7 +17,7 @@ labels = ['invalid','valid']
 n_letters = len(vocab)
 num_classes = len(labels)
 input_size = 2
-output_size = 2
+output_size = 1
 hidden_1_size = 1
 hidden_2_size = 2
 
@@ -58,9 +58,9 @@ print(encode_sentence('()()')[0][0].size())
 def encode_labels(label):
     # return torch.tensor(labels.index(label), dtype=torch.float32)
     if label=='valid':
-        return torch.tensor([0,1],dtype=torch.float32)
+        return torch.tensor(0,dtype=torch.float32)
     elif label =='invalid':
-        return torch.tensor([1,0],dtype=torch.float32)
+        return torch.tensor(1,dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []
@@ -89,14 +89,14 @@ X_encoded, y_encoded = encode_dataset(X, y)
 
 
 def classFromOutput(output):
-    # if output.item() > 0.5:
-    #     category_i = 1
-    # else:
-    #     category_i = 0
-    # return labels[category_i], category_i
-    top_n, top_i = output.data.topk(1)  # Tensor out of Variable with .data
-    category_i = top_i[0]
+    if output.item() > 0.5:
+        category_i = 0
+    else:
+        category_i = 1
     return labels[category_i], category_i
+    # top_n, top_i = output.data.topk(1)  # Tensor out of Variable with .data
+    # category_i = top_i[0]
+    # return labels[category_i], category_i
 
 
 class Net(nn.Module):
@@ -135,9 +135,10 @@ class Net(nn.Module):
         self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_copy_relu = nn.ReLU()
         self.out = nn.Linear(hidden_size_2,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
-        self.softmax = nn.Softmax(dim=0)
+        self.out.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        self.out.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        self.softmax = nn.Softmax()
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x, opening_brackets, closing_brackets, excess_closing_brackets):
         closing = self.closing_filter(x)
@@ -171,7 +172,8 @@ class Net(nn.Module):
 
         output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
         output = self.out(output)
-        output = self.softmax(output)
+        # output = self.softmax(output)
+        output = self.sigmoid(output)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
 
 model = Net(input_size,output_size,hidden_1_size,hidden_2_size)
