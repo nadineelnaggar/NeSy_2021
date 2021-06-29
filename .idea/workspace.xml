@@ -2,10 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_Sigmoid_BCE.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Clipping_MSE.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Softmax_BCE.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_no_initialisation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Dataset_6pairs_balanced.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Generator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/GenerateBalancedDataset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_4.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_4.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,8 +32,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1uPBvBAvVduiadGyTWyDzm8pJP9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Dyck 1 Counter" />
@@ -52,7 +63,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Dyck1_Counter_8">
+  <component name="RunManager" selected="Python.Dyck1_Counter_8_no_initialisation">
     <configuration name="Dyck1_Counter_4" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -67,28 +78,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_4.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Dyck1_Counter_5" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="NeSy_2021" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dyck 1 Counter" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_5.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -163,13 +152,35 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Dyck1_Counter_8_no_initialisation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="NeSy_2021" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Dyck 1 Counter" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_no_initialisation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Dyck1_Counter_8" />
-        <item itemvalue="Python.Dyck1_Counter_6" />
-        <item itemvalue="Python.Dyck1_Counter_7" />
-        <item itemvalue="Python.Dyck1_Counter_5" />
+        <item itemvalue="Python.Dyck1_Counter_8_no_initialisation" />
         <item itemvalue="Python.Dyck1_Counter_4" />
+        <item itemvalue="Python.Dyck1_Counter_7" />
+        <item itemvalue="Python.Dyck1_Counter_6" />
+        <item itemvalue="Python.Dyck1_Counter_8" />
       </list>
     </recent_temporary>
   </component>
@@ -183,7 +194,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="96083000" />
+      <workItem from="1624557572974" duration="101355000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -381,7 +392,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624996234206</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="saving weights for Dyck1_Counter_8">
+      <created>1625004980711</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1625004980711</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -399,6 +417,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Created folder for the counter code" />
     <MESSAGE value="Update the Test_Sigmoid code" />
     <MESSAGE value="Creating the Dyck 1 Counter folder and Dyck1_Counter code" />
@@ -411,7 +430,8 @@
     <MESSAGE value="Writing the code Dyck1_Counter 4 which uses varying length bracket sequences (lengths 2 and 4)" />
     <MESSAGE value="Writing Dyck1_Counter_6 code and the drawing of the network" />
     <MESSAGE value="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax" />
-    <option name="LAST_COMMIT_MESSAGE" value="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax" />
+    <MESSAGE value="saving weights for Dyck1_Counter_8" />
+    <option name="LAST_COMMIT_MESSAGE" value="saving weights for Dyck1_Counter_8" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -437,14 +457,16 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Clipping.coverage" NAME="Counter_Clipping Coverage Results" MODIFIED="1624632244059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter.coverage" NAME="Dyck1_Counter Coverage Results" MODIFIED="1624831077887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Sigmoid_Test.coverage" NAME="Sigmoid_Test Coverage Results" MODIFIED="1624668448871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sigmoid Test" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7.coverage" NAME="Dyck1_Counter_7 Coverage Results" MODIFIED="1624965012050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_4.coverage" NAME="Dyck1_Counter_4 Coverage Results" MODIFIED="1624901886117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_3.coverage" NAME="Dyck1_Counter_3 Coverage Results" MODIFIED="1624836098898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6.coverage" NAME="Dyck1_Counter_6 Coverage Results" MODIFIED="1624965058545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Generator.coverage" NAME="Dyck1_Generator Coverage Results" MODIFIED="1625007586812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7.coverage" NAME="Dyck1_Counter_7 Coverage Results" MODIFIED="1625010080228" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_4.coverage" NAME="Dyck1_Counter_4 Coverage Results" MODIFIED="1625010512585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Linear.coverage" NAME="Counter_Linear Coverage Results" MODIFIED="1624632113873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_no_initialisation.coverage" NAME="Dyck1_Counter_8_no_initialisation Coverage Results" MODIFIED="1625010956219" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8.coverage" NAME="Dyck1_Counter_8 Coverage Results" MODIFIED="1625010051635" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Sigmoid_Test.coverage" NAME="Sigmoid_Test Coverage Results" MODIFIED="1624668448871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sigmoid Test" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_3.coverage" NAME="Dyck1_Counter_3 Coverage Results" MODIFIED="1624836098898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6.coverage" NAME="Dyck1_Counter_6 Coverage Results" MODIFIED="1625010073547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter.coverage" NAME="Counter Coverage Results" MODIFIED="1624745156089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8.coverage" NAME="Dyck1_Counter_8 Coverage Results" MODIFIED="1625004835249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_2.coverage" NAME="Dyck1_Counter_2 Coverage Results" MODIFIED="1624836333310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_5.coverage" NAME="Dyck1_Counter_5 Coverage Results" MODIFIED="1624908636728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
   </component>

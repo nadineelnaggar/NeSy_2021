@@ -518,8 +518,9 @@ def train():
     df1['weight_output_layer'] = weight_output_layer
     df1['bias_output_layer'] = bias_output_layer
     df1['all losses'] = all_losses
+    df1['epoch accuracies'] = epoch_accuracies
 
-    df1.to_excel('Dyck1_Counter_8_Softmax_BCE.xlsx')
+    df1.to_excel('Dyck1_Counter_6_Softmax_BCE.xlsx')
 
 train()
 
@@ -588,3 +589,117 @@ def test():
 
 
 print('test accuracy = ', test())
+
+
+data_length = []
+X_length = []
+y_length = []
+
+
+with open('Dyck1_Dataset_6pairs_balanced.txt','r') as f:
+    for line in f:
+        line = line.split(",")
+        sentence = line[0].strip()
+        label = line[1].strip()
+        X_length.append(sentence)
+        y_length.append(label)
+        data_length.append((sentence,label))
+
+# start the encoding of the dataset and labels
+
+def encode_sentence_length(sentence):
+    rep = torch.zeros(12,1,input_size)
+    for index, char in enumerate(sentence):
+        pos = vocab.index(char)
+        rep[index][0][pos] = 1
+        # if pos == 0:
+        #     rep[index][0][pos] = 1
+        # elif pos == 1:
+        #     rep[index][0] = -1
+    rep.requires_grad_(True)
+    return rep
+
+
+def encode_labels(label):
+    # return torch.tensor(labels.index(label), dtype=torch.float32)
+    if label=='valid':
+        return torch.tensor([0,1],dtype=torch.float32)
+    elif label =='invalid':
+        return torch.tensor([1,0],dtype=torch.float32)
+
+def encode_dataset_length(sentences, labels):
+    encoded_sentences = []
+    encoded_labels = []
+    for sentence in sentences:
+        encoded_sentences.append(encode_sentence_length(sentence))
+    for label in labels:
+        encoded_labels.append(encode_labels(label))
+    return encoded_sentences, encoded_labels
+
+
+X_length_encoded, y_length_encoded = encode_dataset_length(X_length, y_length)
+
+def test_length():
+    model.eval()
+    num_correct = 0
+    num_samples = len(X_length)
+    confusion = torch.zeros(num_classes, num_classes)
+    expected_classes = []
+    predicted_classes = []
+    correct_guesses = []
+    incorrect_guesses = []
+    print('////////////////////////////////////////')
+    print('TEST LENGTH DATASET')
+    with torch.no_grad():
+        for i in range(num_samples):
+            class_category = y_length[i]
+            class_tensor = y_length_encoded[i]
+            input_sentence = X_length[i]
+            input_tensor = X_length_encoded[i]
+
+            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
+            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+
+            # print('////////////////////////////////////////////')
+            # print('Test sample = ', input_sentence)
+
+            for j in range(input_tensor.size()[0]):
+                # print('input tensor[j][0] = ', input_tensor[j][0])
+
+                output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
+                    input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
+
+                # print('opening bracket count = ', opening_bracket_count)
+                # print('closing bracket count = ', closing_bracket_count)
+                # print('surplus closing bracket count = ', surplus_closing_bracket_count)
+                # print('output = ',output_tensor)
+
+            guess, guess_i = classFromOutput(output_tensor)
+            class_i = labels.index(class_category)
+            # print('predicted class = ', guess)
+            # print('actual class = ', class_category)
+            confusion[class_i][guess_i] += 1
+            predicted_classes.append(guess_i)
+            expected_classes.append(class_i)
+
+            if guess == class_category:
+                num_correct += 1
+                correct_guesses.append(input_sentence)
+            else:
+                incorrect_guesses.append(input_sentence)
+
+    accuracy = num_correct / num_samples * 100
+    print('confusion matrix for test set \n', confusion)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    bottom1, top1 = heat.get_ylim()
+    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    # plt.show()
+    print('correct guesses in testing = ', correct_guesses)
+    print('incorrect guesses in testing = ', incorrect_guesses)
+    return accuracy
+
+
+print('test length accuracy = ', test_length())

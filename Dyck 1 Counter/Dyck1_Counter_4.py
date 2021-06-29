@@ -7,6 +7,7 @@ import random
 import seaborn as sns
 
 
+
 max_length = 4 #2 pairs of brackets, for one pair of brackets, max_length=2
 
 input_size = 1
