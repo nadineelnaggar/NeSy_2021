@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -181,7 +182,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="90102000" />
+      <workItem from="1624557572974" duration="91317000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -358,7 +359,21 @@
       <option name="project" value="LOCAL" />
       <updated>1624964552219</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax">
+      <created>1624964950704</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1624964950704</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax">
+      <created>1624965147836</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1624965147837</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -387,7 +402,8 @@
     <MESSAGE value="Testing different weights for the output layer in Dyck1_Counter_2.&#10;There are 2 different options [[0,0],[1,1]] and [[1,0],[1,1]]. Both work. First one gives 100% accuracy for all epochs. Second one gives 100% accuracy on all epochs except epoch 0, and always misclassifies &quot;()&quot; in epoch 0." />
     <MESSAGE value="Writing the code Dyck1_Counter 4 which uses varying length bracket sequences (lengths 2 and 4)" />
     <MESSAGE value="Writing Dyck1_Counter_6 code and the drawing of the network" />
-    <option name="LAST_COMMIT_MESSAGE" value="Writing Dyck1_Counter_6 code and the drawing of the network" />
+    <MESSAGE value="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax" />
+    <option name="LAST_COMMIT_MESSAGE" value="Writing Dyck1_Counter_7 code, which is the same as Dyck1_Counter_6 but with a sigmoid output activation instead of softmax" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

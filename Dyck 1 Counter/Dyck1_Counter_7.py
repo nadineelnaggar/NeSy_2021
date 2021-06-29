@@ -8,6 +8,10 @@ import random
 import seaborn as sns
 
 
+"""
+this is an implementation of the image Dyck1_Counter_6.png but with a sigmoid activation instead of softmax
+"""
+
 max_length=4
 num_epochs = 1000
 
