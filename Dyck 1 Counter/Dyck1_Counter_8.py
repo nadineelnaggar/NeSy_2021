@@ -8,8 +8,10 @@ import random
 import seaborn as sns
 import pandas
 
+
 """
-this is an implementation of the image Dyck1_Counter_6.png
+this is an implementation of the image Dyck1_Counter_6.png but with a clipping (regression activation)
+for the output layer instead of a sigmoid/softmax activation.
 """
 
 
@@ -161,6 +163,7 @@ class Net(nn.Module):
         opening = self.opening_bracket_counter_relu(opening)
         opening_brackets=opening
 
+
         closing_minus_opening = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
         opening_minus_closing = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
         closing_minus_opening = self.closing_minus_opening(closing_minus_opening)
@@ -176,7 +179,8 @@ class Net(nn.Module):
 
         output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
         output = self.out(output)
-        output = self.softmax(output)
+        # output = self.softmax(output)
+        output = torch.clamp(output,min=0,max=1)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
 
 model = Net(input_size,output_size,hidden_1_size,hidden_2_size)
@@ -281,7 +285,6 @@ epochs = []
 # final_gradients_hidden2 = []
 # final_gradients_output = []
 
-
 weight_opening_bracket_filter = []
 bias_opening_bracket_filter = []
 weight_closing_bracket_filter = []
@@ -302,9 +305,9 @@ weight_output_layer = []
 bias_output_layer = []
 
 learning_rate = 0.005
-# criterion = nn.MSELoss()
+criterion = nn.MSELoss()
 # criterion=nn.CrossEntropyLoss()
-criterion = nn.BCELoss()
+# criterion = nn.BCELoss()
 # criterion=nn.BCEWithLogitsLoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
@@ -390,6 +393,8 @@ def train():
 
 
 
+
+
             output_label, output_label_index = classFromOutput(output_tensor)
             if output_label==target_label:
                 num_correct+=1
@@ -444,9 +449,6 @@ def train():
         #     print('initial output bias = ',model.l3n1.bias)
             print('loss = ',loss.item())
 
-
-        # print('loss = ', loss.item())
-
         weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
         bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
         weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
@@ -466,6 +468,8 @@ def train():
         weight_output_layer.append(model.out.weight.clone())
         bias_output_layer.append(model.out.bias.clone())
 
+        # print('loss = ', loss.item())
+
         if epoch==(num_epochs-1):
             print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
             conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
@@ -477,6 +481,8 @@ def train():
             print(all_epoch_incorrect_guesses)
     # plt.plot(epochs,all_losses)
     # plt.show()
+
+
     df1 = pandas.DataFrame()
     for i in range(len(epochs)):
         weight_opening_bracket_filter[i] = weight_opening_bracket_filter[i].detach().numpy()
@@ -499,19 +505,19 @@ def train():
         bias_output_layer[i] = bias_output_layer[i].detach().numpy()
 
     df1['epochs'] = epochs
-    df1['weight_opening_bracket_filter'] = weight_opening_bracket_filter
-    df1['bias_opening_bracket_filter'] = bias_opening_bracket_filter
-    df1['weight_closing_bracket_filter'] = weight_closing_bracket_filter
+    df1['weight_opening_bracket_filter']=weight_opening_bracket_filter
+    df1['bias_opening_bracket_filter']=bias_opening_bracket_filter
+    df1['weight_closing_bracket_filter']=weight_closing_bracket_filter
     df1['bias_closing_bracket_filter'] = bias_closing_bracket_filter
-    df1['weight_opening_bracket_counter'] = weight_opening_bracket_counter
+    df1['weight_opening_bracket_counter']=weight_opening_bracket_counter
     df1['bias_opening_bracket_counter'] = bias_opening_bracket_counter
-    df1['weight_closing_bracket_counter'] = weight_closing_bracket_counter
-    df1['bias_closing_bracket_counter'] = bias_closing_bracket_counter
+    df1['weight_closing_bracket_counter']=weight_closing_bracket_counter
+    df1['bias_closing_bracket_counter']=bias_closing_bracket_counter
     df1['weight_opening_minus_closing'] = weight_opening_minus_closing
     df1['bias_opening_minus_closing'] = bias_opening_minus_closing
     df1['weight_opening_minus_closing_copy'] = weight_opening_minus_closing_copy
     df1['bias_opening_minus_closing_copy'] = bias_opening_minus_closing_copy
-    df1['weight_closing_minus_opening'] = weight_closing_minus_opening
+    df1['weight_closing_minus_opening']=weight_closing_minus_opening
     df1['bias_closing_minus_opening'] = bias_closing_minus_opening
     df1['weight_surplus_closing_bracket_count'] = weight_surplus_closing_bracket_count
     df1['bias_surplus_closing_bracket_count'] = bias_surplus_closing_bracket_count
@@ -519,7 +525,8 @@ def train():
     df1['bias_output_layer'] = bias_output_layer
     df1['all losses'] = all_losses
 
-    df1.to_excel('Dyck1_Counter_8_Softmax_BCE.xlsx')
+    df1.to_excel('Dyck1_Counter_8_Clipping_MSE.xlsx')
+
 
 train()
 

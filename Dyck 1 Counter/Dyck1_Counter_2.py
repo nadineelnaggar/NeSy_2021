@@ -7,7 +7,9 @@ from sklearn.model_selection import train_test_split
 import seaborn as sns
 import random
 
-
+"""
+same as code Dyck1_Counter but with ( = 1 and ) = -1 encodings instead of binary vectors/one-hot
+"""
 
 counter_input_size = 3
 output_size = 2
