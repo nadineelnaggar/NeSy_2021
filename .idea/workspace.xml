@@ -50,7 +50,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Dyck1_Counter_7">
+  <component name="RunManager" selected="Python.Dyck1_Counter_6">
     <configuration name="Dyck1_Counter_2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -163,8 +163,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Dyck1_Counter_7" />
         <item itemvalue="Python.Dyck1_Counter_6" />
+        <item itemvalue="Python.Dyck1_Counter_7" />
         <item itemvalue="Python.Dyck1_Counter_5" />
         <item itemvalue="Python.Dyck1_Counter_4" />
         <item itemvalue="Python.Dyck1_Counter_2" />
@@ -414,10 +414,10 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Clipping.coverage" NAME="Counter_Clipping Coverage Results" MODIFIED="1624632244059" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter.coverage" NAME="Dyck1_Counter Coverage Results" MODIFIED="1624831077887" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Sigmoid_Test.coverage" NAME="Sigmoid_Test Coverage Results" MODIFIED="1624668448871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sigmoid Test" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7.coverage" NAME="Dyck1_Counter_7 Coverage Results" MODIFIED="1624964834587" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7.coverage" NAME="Dyck1_Counter_7 Coverage Results" MODIFIED="1624965012050" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_4.coverage" NAME="Dyck1_Counter_4 Coverage Results" MODIFIED="1624901886117" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_3.coverage" NAME="Dyck1_Counter_3 Coverage Results" MODIFIED="1624836098898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6.coverage" NAME="Dyck1_Counter_6 Coverage Results" MODIFIED="1624964811789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6.coverage" NAME="Dyck1_Counter_6 Coverage Results" MODIFIED="1624965058545" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter_Linear.coverage" NAME="Counter_Linear Coverage Results" MODIFIED="1624632113873" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter.coverage" NAME="Counter Coverage Results" MODIFIED="1624745156089" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_2.coverage" NAME="Dyck1_Counter_2 Coverage Results" MODIFIED="1624836333310" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />

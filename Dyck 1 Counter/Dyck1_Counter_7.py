@@ -284,12 +284,13 @@ learning_rate = 0.005
 criterion = nn.BCELoss()
 # criterion=nn.BCEWithLogitsLoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
-# optimiser=optim.Adam(model.parameters(),lr=learning_rate)
+optimiser=optim.Adam(model.parameters(),lr=learning_rate)
 
 
 def train():
     for epoch in range(num_epochs):
         shuffle = True
+        # shuffle=False
         epoch_incorrect_guesses = []
         num_correct = 0
         current_loss = 0
