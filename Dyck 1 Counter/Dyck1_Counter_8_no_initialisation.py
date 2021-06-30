@@ -153,7 +153,7 @@ class Net(nn.Module):
         closing = self.closing_filter_relu(closing)
 
         # closing = torch.cat((closing.unsqueeze(dim=0),closing_brackets.unsqueeze(dim=0)))
-        closing = torch.cat((closing, closing_brackets.unsqueeze(dim=0)))
+        closing = torch.cat((closing, closing_brackets))
         closing = self.closing_bracket_counter(closing)
         closing = self.closing_bracket_counter_relu(closing)
         closing_brackets = closing
@@ -162,7 +162,7 @@ class Net(nn.Module):
         opening = self.opening_filter_relu(opening)
 
         # opening = torch.cat((opening.unsqueeze(dim=0),opening_brackets.unsqueeze(dim=0)))
-        opening = torch.cat((opening, opening_brackets.unsqueeze(dim=0)))
+        opening = torch.cat((opening, opening_brackets))
         opening = self.opening_bracket_counter(opening)
         opening = self.opening_bracket_counter_relu(opening)
         opening_brackets=opening
@@ -177,11 +177,11 @@ class Net(nn.Module):
 
         opening_minus_closing = self.opening_minus_closing_copy(opening_minus_closing.unsqueeze(dim=0))
         opening_minus_closing = self.opening_minus_closing_copy_relu(opening_minus_closing)
-        surplus_closing_brackets = torch.cat((closing_minus_opening,excess_closing_brackets.unsqueeze(dim=0)))
+        surplus_closing_brackets = torch.cat((closing_minus_opening,excess_closing_brackets))
         surplus_closing_brackets = self.closing_bracket_surplus(surplus_closing_brackets)
         surplus_closing_brackets = self.closing_bracket_surplus_relu(surplus_closing_brackets)
 
-        output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing))
+        output = torch.cat((surplus_closing_brackets,opening_minus_closing[0]))
         output = self.out(output)
         # output = self.softmax(output)
         output = torch.clamp(output,min=0,max=1)
@@ -208,9 +208,9 @@ def test_whole_dataset():
             input_sentence = X_notencoded[i]
             input_tensor = X_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -380,9 +380,9 @@ def train():
                 print('input_tensor = ',input_tensor)
             #initialise the values for the recurrent connections
 
-            opening_bracket_count = torch.tensor(0,dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0,dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0,dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0],dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0],dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0],dtype=torch.float32)
 
             for j in range(input_tensor.size()[0]):
 
@@ -555,9 +555,9 @@ def test():
             input_sentence = X_test_notencoded[i]
             input_tensor = X_test[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -668,9 +668,9 @@ def test_length():
             input_sentence = X_length[i]
             input_tensor = X_length_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)

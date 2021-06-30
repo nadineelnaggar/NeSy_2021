@@ -480,6 +480,17 @@ def train():
             print('confusion matrix for training set = \n', conf_matrix)
             # plt.show()
             print(all_epoch_incorrect_guesses)
+
+        if accuracy==100:
+            print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
+            conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+            heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+            bottom1, top1 = heat.get_ylim()
+            heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+            print('confusion matrix for training set = \n', conf_matrix)
+            # plt.show()
+            print(all_epoch_incorrect_guesses)
+            break
     # plt.plot(epochs,all_losses)
     # plt.show()
     df1 = pandas.DataFrame()
@@ -526,7 +537,7 @@ def train():
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
 
-    df1.to_excel('Dyck1_Counter_7_Sigmoid_BCE.xlsx')
+    df1.to_excel('Dyck1_Counter_7_early_stopping_Sigmoid_BCE.xlsx')
 
 train()
 

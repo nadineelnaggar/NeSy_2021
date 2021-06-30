@@ -8,10 +8,10 @@ import random
 import seaborn as sns
 import pandas
 
+"""
+this is an implementation of the image Dyck1_Counter_6.png
+"""
 
-"""
-this is an implementation of the image Dyck1_Counter_6.png but with a sigmoid activation instead of softmax
-"""
 
 max_length=4
 num_epochs = 1000
@@ -22,7 +22,7 @@ labels = ['invalid','valid']
 n_letters = len(vocab)
 num_classes = len(labels)
 input_size = 2
-output_size = 1
+output_size = 2
 hidden_1_size = 1
 hidden_2_size = 2
 
@@ -63,9 +63,9 @@ print(encode_sentence('()()')[0][0].size())
 def encode_labels(label):
     # return torch.tensor(labels.index(label), dtype=torch.float32)
     if label=='valid':
-        return torch.tensor(0,dtype=torch.float32)
+        return torch.tensor([0,1],dtype=torch.float32)
     elif label =='invalid':
-        return torch.tensor(1,dtype=torch.float32)
+        return torch.tensor([1,0],dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []
@@ -94,14 +94,14 @@ X_encoded, y_encoded = encode_dataset(X, y)
 
 
 def classFromOutput(output):
-    if output.item() > 0.5:
-        category_i = 0
-    else:
-        category_i = 1
-    return labels[category_i], category_i
-    # top_n, top_i = output.data.topk(1)  # Tensor out of Variable with .data
-    # category_i = top_i[0]
+    # if output.item() > 0.5:
+    #     category_i = 1
+    # else:
+    #     category_i = 0
     # return labels[category_i], category_i
+    top_n, top_i = output.data.topk(1)  # Tensor out of Variable with .data
+    category_i = top_i[0]
+    return labels[category_i], category_i
 
 
 class Net(nn.Module):
@@ -140,10 +140,9 @@ class Net(nn.Module):
         self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_copy_relu = nn.ReLU()
         self.out = nn.Linear(hidden_size_2,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
-        self.softmax = nn.Softmax()
-        self.sigmoid = nn.Sigmoid()
+        self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
+        self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
+        self.softmax = nn.Softmax(dim=0)
 
     def forward(self, x, opening_brackets, closing_brackets, excess_closing_brackets):
         closing = self.closing_filter(x)
@@ -177,8 +176,7 @@ class Net(nn.Module):
 
         output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
         output = self.out(output)
-        # output = self.softmax(output)
-        output = self.sigmoid(output)
+        output = self.softmax(output)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
 
 model = Net(input_size,output_size,hidden_1_size,hidden_2_size)
@@ -303,8 +301,6 @@ bias_surplus_closing_bracket_count = []
 weight_output_layer = []
 bias_output_layer = []
 
-
-
 learning_rate = 0.005
 # criterion = nn.MSELoss()
 # criterion=nn.CrossEntropyLoss()
@@ -312,9 +308,6 @@ criterion = nn.BCELoss()
 # criterion=nn.BCEWithLogitsLoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
-
-
-
 
 
 def train():
@@ -394,6 +387,9 @@ def train():
             loss = criterion(output_tensor, target_tensor)
             loss.backward()
             optimiser.step()
+
+
+
             output_label, output_label_index = classFromOutput(output_tensor)
             if output_label==target_label:
                 num_correct+=1
@@ -470,7 +466,6 @@ def train():
         weight_output_layer.append(model.out.weight.clone())
         bias_output_layer.append(model.out.bias.clone())
 
-
         if epoch==(num_epochs-1):
             print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
             conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
@@ -480,6 +475,17 @@ def train():
             print('confusion matrix for training set = \n', conf_matrix)
             # plt.show()
             print(all_epoch_incorrect_guesses)
+        if accuracy==100:
+            print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
+            conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+            heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+            bottom1, top1 = heat.get_ylim()
+            heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+            print('confusion matrix for training set = \n', conf_matrix)
+            # plt.show()
+            print(all_epoch_incorrect_guesses)
+            break
+
     # plt.plot(epochs,all_losses)
     # plt.show()
     df1 = pandas.DataFrame()
@@ -526,7 +532,7 @@ def train():
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
 
-    df1.to_excel('Dyck1_Counter_7_Sigmoid_BCE.xlsx')
+    df1.to_excel('Dyck1_Counter_6_early_stopping_Softmax_BCE.xlsx')
 
 train()
 
@@ -597,121 +603,6 @@ def test():
 print('test accuracy = ', test())
 
 
-
-# data_length = []
-# X_length = []
-# y_length = []
-#
-#
-# with open('Dyck1_Dataset_6pairs_balanced.txt','r') as f:
-#     for line in f:
-#         line = line.split(",")
-#         sentence = line[0].strip()
-#         label = line[1].strip()
-#         X_length.append(sentence)
-#         y_length.append(label)
-#         data_length.append((sentence,label))
-#
-# # start the encoding of the dataset and labels
-#
-# def encode_sentence_length(sentence):
-#     rep = torch.zeros(12,1,input_size)
-#     for index, char in enumerate(sentence):
-#         pos = vocab.index(char)
-#         rep[index][0][pos] = 1
-#         # if pos == 0:
-#         #     rep[index][0][pos] = 1
-#         # elif pos == 1:
-#         #     rep[index][0] = -1
-#     rep.requires_grad_(True)
-#     return rep
-#
-#
-# def encode_labels(label):
-#     # return torch.tensor(labels.index(label), dtype=torch.float32)
-#     if label=='valid':
-#         return torch.tensor([0,1],dtype=torch.float32)
-#     elif label =='invalid':
-#         return torch.tensor([1,0],dtype=torch.float32)
-#
-# def encode_dataset_length(sentences, labels):
-#     encoded_sentences = []
-#     encoded_labels = []
-#     for sentence in sentences:
-#         encoded_sentences.append(encode_sentence_length(sentence))
-#     for label in labels:
-#         encoded_labels.append(encode_labels(label))
-#     return encoded_sentences, encoded_labels
-#
-#
-# X_length_encoded, y_length_encoded = encode_dataset_length(X_length, y_length)
-#
-# def test_length():
-#     model.eval()
-#     num_correct = 0
-#     num_samples = len(X_length)
-#     confusion = torch.zeros(num_classes, num_classes)
-#     expected_classes = []
-#     predicted_classes = []
-#     correct_guesses = []
-#     incorrect_guesses = []
-#     print('////////////////////////////////////////')
-#     print('TEST LENGTH DATASET')
-#     with torch.no_grad():
-#         for i in range(num_samples):
-#             class_category = y_length[i]
-#             class_tensor = y_length_encoded[i]
-#             input_sentence = X_length[i]
-#             input_tensor = X_length_encoded[i]
-#
-#             opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-#             closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-#             surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-#
-#             # print('////////////////////////////////////////////')
-#             # print('Test sample = ', input_sentence)
-#
-#             for j in range(input_tensor.size()[0]):
-#                 # print('input tensor[j][0] = ', input_tensor[j][0])
-#
-#                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
-#                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
-#
-#                 # print('opening bracket count = ', opening_bracket_count)
-#                 # print('closing bracket count = ', closing_bracket_count)
-#                 # print('surplus closing bracket count = ', surplus_closing_bracket_count)
-#                 # print('output = ',output_tensor)
-#
-#             guess, guess_i = classFromOutput(output_tensor)
-#             class_i = labels.index(class_category)
-#             # print('predicted class = ', guess)
-#             # print('actual class = ', class_category)
-#             confusion[class_i][guess_i] += 1
-#             predicted_classes.append(guess_i)
-#             expected_classes.append(class_i)
-#
-#             if guess == class_category:
-#                 num_correct += 1
-#                 correct_guesses.append(input_sentence)
-#             else:
-#                 incorrect_guesses.append(input_sentence)
-#
-#     accuracy = num_correct / num_samples * 100
-#     print('confusion matrix for test set \n', confusion)
-#     conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-#     heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-#     bottom1, top1 = heat.get_ylim()
-#     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-#     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
-#     # plt.show()
-#     print('correct guesses in testing = ', correct_guesses)
-#     print('incorrect guesses in testing = ', incorrect_guesses)
-#     return accuracy
-#
-#
-# print('test length accuracy = ', test_length())
-
-
 data_length = []
 X_length = []
 y_length = []
@@ -744,9 +635,9 @@ def encode_sentence_length(sentence):
 def encode_labels(label):
     # return torch.tensor(labels.index(label), dtype=torch.float32)
     if label=='valid':
-        return torch.tensor(0,dtype=torch.float32)
+        return torch.tensor([0,1],dtype=torch.float32)
     elif label =='invalid':
-        return torch.tensor(1,dtype=torch.float32)
+        return torch.tensor([1,0],dtype=torch.float32)
 
 def encode_dataset_length(sentences, labels):
     encoded_sentences = []
