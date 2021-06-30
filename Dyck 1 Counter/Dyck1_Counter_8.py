@@ -11,7 +11,7 @@ import pandas
 
 """
 this is an implementation of the image Dyck1_Counter_6.png but with a clipping (regression activation)
-for the output layer instead of a sigmoid/softmax activation.
+for the output layer instead of a sigmoid/softmax activation and MSE loss function.
 """
 
 
@@ -525,6 +525,7 @@ def train():
     df1['bias_output_layer'] = bias_output_layer
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
+    df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
 
     df1.to_excel('Dyck1_Counter_8_Clipping_MSE.xlsx')
 

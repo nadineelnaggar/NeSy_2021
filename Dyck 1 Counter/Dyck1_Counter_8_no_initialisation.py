@@ -11,6 +11,7 @@ import pandas
 
 """
 NO INITIALISED WEIGHTS
+FIX DIMENSIONALITY ERRORS
 this is an implementation of the image Dyck1_Counter_6.png but with a clipping (regression activation)
 for the output layer instead of a sigmoid/softmax activation.
 """
@@ -152,7 +153,7 @@ class Net(nn.Module):
         closing = self.closing_filter_relu(closing)
 
         # closing = torch.cat((closing.unsqueeze(dim=0),closing_brackets.unsqueeze(dim=0)))
-        closing = torch.cat((closing, closing_brackets))
+        closing = torch.cat((closing, closing_brackets.unsqueeze(dim=0)))
         closing = self.closing_bracket_counter(closing)
         closing = self.closing_bracket_counter_relu(closing)
         closing_brackets = closing
@@ -161,14 +162,14 @@ class Net(nn.Module):
         opening = self.opening_filter_relu(opening)
 
         # opening = torch.cat((opening.unsqueeze(dim=0),opening_brackets.unsqueeze(dim=0)))
-        opening = torch.cat((opening, opening_brackets))
+        opening = torch.cat((opening, opening_brackets.unsqueeze(dim=0)))
         opening = self.opening_bracket_counter(opening)
         opening = self.opening_bracket_counter_relu(opening)
         opening_brackets=opening
 
 
-        closing_minus_opening = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
-        opening_minus_closing = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
+        closing_minus_opening = torch.cat((closing,opening))
+        opening_minus_closing = torch.cat((closing,opening))
         closing_minus_opening = self.closing_minus_opening(closing_minus_opening)
         closing_minus_opening = self.closing_minus_opening_relu(closing_minus_opening)
         opening_minus_closing = self.opening_minus_closing(opening_minus_closing)
@@ -176,17 +177,18 @@ class Net(nn.Module):
 
         opening_minus_closing = self.opening_minus_closing_copy(opening_minus_closing.unsqueeze(dim=0))
         opening_minus_closing = self.opening_minus_closing_copy_relu(opening_minus_closing)
-        surplus_closing_brackets = torch.cat((closing_minus_opening.unsqueeze(dim=0),excess_closing_brackets.unsqueeze(dim=0)))
+        surplus_closing_brackets = torch.cat((closing_minus_opening,excess_closing_brackets.unsqueeze(dim=0)))
         surplus_closing_brackets = self.closing_bracket_surplus(surplus_closing_brackets)
         surplus_closing_brackets = self.closing_bracket_surplus_relu(surplus_closing_brackets)
 
-        output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
+        output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing))
         output = self.out(output)
         # output = self.softmax(output)
         output = torch.clamp(output,min=0,max=1)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
 
 model = Net(input_size,output_size,hidden_1_size,hidden_2_size)
+
 
 def test_whole_dataset():
     model.eval()
@@ -206,9 +208,9 @@ def test_whole_dataset():
             input_sentence = X_notencoded[i]
             input_tensor = X_encoded[i]
 
-            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
-            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
+            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
