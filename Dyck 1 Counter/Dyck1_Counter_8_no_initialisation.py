@@ -16,8 +16,8 @@ this is an implementation of the image Dyck1_Counter_6.png but with a clipping (
 for the output layer instead of a sigmoid/softmax activation.
 """
 
-document_name = 'Dyck1_Counter_8_No_Initialisation_Clipping_MSE.txt'
-excel_name = 'Dyck1_Counter_8_No_Initialisation_Clipping_MSE.xlsx'
+document_name = 'Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.txt'
+excel_name = 'Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -296,6 +296,7 @@ all_epoch_incorrect_guesses = []
 # initial_biases = []
 # final_biases = []
 epochs = []
+confusion_matrices=[]
 # initial_weights_counter = []
 # initial_weights_hidden1 = []
 # initial_weights_hidden2 = []
@@ -459,6 +460,9 @@ def train():
         all_losses.append(current_loss/len(X_train))
         all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
 
+        conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+        confusion_matrices.append(conf_matrix)
+
         # final_weights_counter.append(model.counter.weight.clone())
         # final_gradients_counter.append(model.counter.weight.grad.clone())
         # final_biases_counter.append(model.counter.bias.clone())
@@ -562,6 +566,8 @@ def train():
     df1['bias_output_layer'] = bias_output_layer
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
+    df1['epoch incorrect guesses']=all_epoch_incorrect_guesses
+    df1['confusion matrices'] = confusion_matrices
 
     # df1.to_excel('Dyck1_Counter_8_No_Initialisation_Clipping_MSE.xlsx')
     df1.to_excel(excel_name)
@@ -742,15 +748,15 @@ def test_length():
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
 
-            with open(document_name,'a') as f:
-                f.write('////////////////////////////////////////////\n')
-                f.write('Test sample '+input_sentence+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('////////////////////////////////////////////\n')
+            #     f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
 
-                with open(document_name, 'a') as f:
-                    f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
+                # with open(document_name, 'a') as f:
+                #     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
@@ -760,11 +766,11 @@ def test_length():
                 # print('surplus closing bracket count = ', surplus_closing_bracket_count)
                 # print('output = ',output_tensor)
 
-                with open(document_name,'a') as f:
-                    f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
-                    f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
-                    f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
-                    f.write('output = '+str(output_tensor)+'\n')
+                # with open(document_name,'a') as f:
+                #     f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
+                #     f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
+                #     f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
+                #     f.write('output = '+str(output_tensor)+'\n')
 
             guess, guess_i = classFromOutput(output_tensor)
             class_i = labels.index(class_category)
@@ -774,9 +780,9 @@ def test_length():
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
 
-            with open(document_name,'a') as f:
-                f.write('predicted class = '+guess+'\n')
-                f.write('actual class = '+class_category+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('predicted class = '+guess+'\n')
+            #     f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
