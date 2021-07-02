@@ -8,40 +8,9 @@ import seaborn as sns
 import random
 import matplotlib.pyplot as plt
 
-# input_size = 2
-# counter_rec_input_size = 1
-# counter_output_size = 1
-# output_size = 1
-#
-# class Net(nn.Module):
-#     def __init__(self, input_size, counter_rec_input_size, counter_output_size, output_size):
-#         super(Net, self).__init__()
-#         self.counter = nn.Linear(input_size+counter_rec_input_size,counter_output_size)
-#         self.out = nn.Linear(counter_output_size,output_size)
-#         self.sig = nn.Sigmoid()
-#
-#     def forward(self,x,counter_rec_input):
-#         counter_combined = torch.cat((x,counter_rec_input))
-#         counter_combined = self.counter(counter_combined)
-#         counter_rec_output = counter_combined
-#         out = self.out(counter_combined)
-#         out = self.sig(out)
-#         return out, counter_rec_output
-#
-#
-#
-# import torch
-# import torch.nn as nn
-# import torch.optim as optim
-# import sklearn
-# from sklearn.model_selection import train_test_split
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import pandas
-# import seaborn as sns
-#
-#
-#
+
+document_name = 'Dyck1_Counter_10_early_stopping_Sigmoid_BCE.txt'
+excel_name = 'Dyck1_Counter_9_early_stopping_Sigmoid_BCE.xlsx'
 
 num_epochs = 1000
 max_length = 2
@@ -352,7 +321,8 @@ df1['output layer biases'] = biases_output_layer
 df1['losses'] = all_losses
 df1['epoch accuracies'] = accuracies
 
-df1.to_excel('Dyck1_Counter_10_early_stopping_Sigmoid_BCE.xlsx')
+# df1.to_excel('Dyck1_Counter_10_early_stopping_Sigmoid_BCE.xlsx')
+df1.to_excel(excel_name)
 
 #
 # df1['weight_11_input_layer'] = weight_11_input_layer

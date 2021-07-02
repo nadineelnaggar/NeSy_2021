@@ -15,6 +15,9 @@ for the output layer instead of a sigmoid/softmax activation and MSE loss functi
 """
 
 
+document_name = 'Dyck1_Counter_8_early_stopping_Clipping_MSE.txt'
+excel_name = 'Dyck1_Counter_8_early_stopping_Clipping_MSE.xlsx'
+
 max_length=4
 num_epochs = 1000
 
@@ -196,6 +199,9 @@ def test_whole_dataset():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST WHOLE DATASET')
+    with open(document_name,'w') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST WHOLE DATASET\n')
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_notencoded[i]
@@ -209,15 +215,28 @@ def test_whole_dataset():
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                # string = 'Test sample = '+input_sentence+'\n'
+                f.write('Test sample = '+ input_sentence+'\n')
+
 
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+                with open(document_name, 'a') as f:
+                    f.write('input tensor[j][0] = ' + str(input_tensor[j][0]) + '\n')
 
                 output, opening_bracket_count,closing_bracket_count,surplus_closing_bracket_count = model(input_tensor[j][0],opening_bracket_count,closing_bracket_count,surplus_closing_bracket_count)
                 print('opening bracket count = ',opening_bracket_count)
                 print('closing bracket count = ',closing_bracket_count)
                 print('surplus closing bracket count = ',surplus_closing_bracket_count)
                 print('output = ',output)
+
+                with open(document_name, 'a') as f:
+                    f.write('opening bracket count = ' + str(opening_bracket_count) + '\n')
+                    f.write('closing bracket count = ' + str(closing_bracket_count) + '\n')
+                    f.write('surplus closing bracket count = ' + str(surplus_closing_bracket_count) + '\n')
+                    f.write('output = ' + str(output) + '\n')
 
             guess, guess_i = classFromOutput(output)
             class_i = labels.index(class_category)
@@ -226,6 +245,10 @@ def test_whole_dataset():
             confusion[class_i][guess_i] += 1
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
+
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
@@ -243,6 +266,12 @@ def test_whole_dataset():
     # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+
+    with open(document_name,'a') as f:
+        f.write('confusion matrix for test set \n'+str(confusion)+'\n')
+        f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
+        f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
+        f.write('accuracy = '+str(accuracy)+'\n')
     return accuracy
 
 
@@ -313,6 +342,69 @@ optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
 
 
+def test_train_set():
+    model.eval()
+    num_correct = 0
+    num_samples = len(X_train)
+    confusion = torch.zeros(num_classes, num_classes)
+    expected_classes = []
+    predicted_classes = []
+    correct_guesses = []
+    incorrect_guesses = []
+    # print('////////////////////////////////////////')
+    # print('TEST SET')
+    with torch.no_grad():
+        for i in range(num_samples):
+            class_category = y_train_notencoded[i]
+            class_tensor = y_train[i]
+            input_sentence = X_train_notencoded[i]
+            input_tensor = X_train[i]
+
+            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
+            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+
+            # print('////////////////////////////////////////////')
+            # print('Test sample = ', input_sentence)
+
+            for j in range(input_tensor.size()[0]):
+                # print('input tensor[j][0] = ', input_tensor[j][0])
+
+                output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
+                    input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
+
+                # print('opening bracket count = ', opening_bracket_count)
+                # print('closing bracket count = ', closing_bracket_count)
+                # print('surplus closing bracket count = ', surplus_closing_bracket_count)
+                # print('output = ',output_tensor)
+
+            guess, guess_i = classFromOutput(output_tensor)
+            class_i = labels.index(class_category)
+            # print('predicted class = ', guess)
+            # print('actual class = ', class_category)
+            confusion[class_i][guess_i] += 1
+            predicted_classes.append(guess_i)
+            expected_classes.append(class_i)
+
+            if guess == class_category:
+                num_correct += 1
+                correct_guesses.append(input_sentence)
+            else:
+                incorrect_guesses.append(input_sentence)
+
+    accuracy = num_correct / num_samples * 100
+    # print('confusion matrix for test set \n', confusion)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    bottom1, top1 = heat.get_ylim()
+    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    # plt.show()
+    # print('correct guesses in testing = ', correct_guesses)
+    # print('incorrect guesses in testing = ', incorrect_guesses)
+    return accuracy
+
+
 def train():
     for epoch in range(num_epochs):
         shuffle = True
@@ -325,6 +417,17 @@ def train():
         predicted_classes = []
 
         print_flag=False
+
+        early_stopping = False
+        test_train_set_accuracy = test_train_set()
+        if test_train_set_accuracy == 100:
+            early_stopping = True
+        if early_stopping == True:
+            all_losses.append(0)
+            epoch_accuracies.append(test_train_set_accuracy)
+            all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
+            break
+
         # initial_weights_counter.append(model.counter.weight.clone())
         # # initial_gradients_counter.append(model.counter.weight.grad.clone())
         # initial_biases_counter.append(model.counter.bias.clone())
@@ -480,19 +583,38 @@ def train():
             # plt.show()
             print(all_epoch_incorrect_guesses)
 
-        if accuracy==100:
-            print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
-            conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-            heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-            bottom1, top1 = heat.get_ylim()
-            heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-            print('confusion matrix for training set = \n', conf_matrix)
-            # plt.show()
-            print(all_epoch_incorrect_guesses)
-            break
+        # if accuracy==100:
+        #     print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
+        #     conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+        #     heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+        #     bottom1, top1 = heat.get_ylim()
+        #     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+        #     print('confusion matrix for training set = \n', conf_matrix)
+        #     # plt.show()
+        #     print(all_epoch_incorrect_guesses)
+        #     break
     # plt.plot(epochs,all_losses)
     # plt.show()
 
+    if early_stopping==True:
+        weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
+        bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
+        weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
+        bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
+        weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
+        bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
+        weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
+        bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
+        weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
+        bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
+        weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
+        bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
+        weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
+        bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
+        weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
+        bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
+        weight_output_layer.append(model.out.weight.clone())
+        bias_output_layer.append(model.out.bias.clone())
 
     df1 = pandas.DataFrame()
     for i in range(len(epochs)):
@@ -538,8 +660,8 @@ def train():
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
 
-    df1.to_excel('Dyck1_Counter_8_early_stopping_Clipping_MSE.xlsx')
-
+    # df1.to_excel('Dyck1_Counter_8_early_stopping_Clipping_MSE.xlsx')
+    df1.to_excel(excel_name)
 
 train()
 
@@ -555,6 +677,11 @@ def test():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST WHOLE DATASET')
+
+    with open(document_name,'a') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST SET\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_test_notencoded[i]
@@ -566,11 +693,17 @@ def test():
             closing_bracket_count = torch.tensor(0, dtype=torch.float32)
             surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
 
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                f.write('Test sample '+input_sentence+'\n')
+
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
 
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+                with open(document_name, 'a') as f:
+                    f.write('input tensor[j][0] = '+ str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
@@ -580,6 +713,12 @@ def test():
                 print('surplus closing bracket count = ', surplus_closing_bracket_count)
                 print('output = ',output_tensor)
 
+                with open(document_name, 'a') as f:
+                    f.write('opening bracket count = ' + str(opening_bracket_count) + '\n')
+                    f.write('closing bracket count = ' + str(closing_bracket_count) + '\n')
+                    f.write('surplus closing bracket count = ' + str(surplus_closing_bracket_count) + '\n')
+                    f.write('output = ' + str(output_tensor) + '\n')
+
             guess, guess_i = classFromOutput(output_tensor)
             class_i = labels.index(class_category)
             print('predicted class = ', guess)
@@ -587,6 +726,10 @@ def test():
             confusion[class_i][guess_i] += 1
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
+
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
@@ -604,6 +747,11 @@ def test():
     # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+    with open(document_name,'a') as f:
+        f.write('accuracy = '+str(accuracy)+'\n')
+        f.write('confusion matrix for test set = \n'+str(confusion)+'\n')
+        f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
+        f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
     return accuracy
 
 
@@ -668,6 +816,9 @@ def test_length():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST LENGTH DATASET')
+    with open(document_name,'a') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST LENGTH SET\n')
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_length[i]
@@ -681,13 +832,22 @@ def test_length():
 
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
+                with open(document_name, 'a') as f:
+                    f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
-
+                with open(document_name,'a') as f:
+                    f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
+                    f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
+                    f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
+                    f.write('output = '+str(output_tensor)+'\n')
                 # print('opening bracket count = ', opening_bracket_count)
                 # print('closing bracket count = ', closing_bracket_count)
                 # print('surplus closing bracket count = ', surplus_closing_bracket_count)
@@ -700,6 +860,10 @@ def test_length():
             confusion[class_i][guess_i] += 1
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
+
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
@@ -717,6 +881,13 @@ def test_length():
     # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+
+    with open(document_name,'a') as f:
+        f.write('accuracy = '+str(accuracy)+'\n')
+        f.write('confusion matrix for test set = \n'+str(confusion)+'\n')
+        f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
+        f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
+
     return accuracy
 
 
