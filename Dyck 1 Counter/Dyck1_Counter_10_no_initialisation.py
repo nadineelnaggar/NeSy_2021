@@ -120,11 +120,11 @@ class Counter(nn.Module):
         # self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.counter = nn.Linear(counter_input_size,counter_output_size)
         # self.counter.weight = nn.Parameter(torch.tensor([[1,0,1],[0,-1,1]],dtype=torch.float32))
-        self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
-        self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        # self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
+        # self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.fc2 = nn.Linear(counter_output_size,output_size)
-        self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
-        self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        # self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
+        # self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.out = nn.Sigmoid()
 
     def forward(self,x,previous_count):
@@ -340,7 +340,7 @@ df1['output layer biases'] = biases_output_layer
 df1['losses'] = all_losses
 df1['epoch accuracies'] = accuracies
 
-df1.to_excel('Dyck1_Counter_10_Sigmoid_BCE.xlsx')
+df1.to_excel('Dyck1_Counter_10_no_initialisation_Sigmoid_BCE.xlsx')
 
 #
 # df1['weight_11_input_layer'] = weight_11_input_layer

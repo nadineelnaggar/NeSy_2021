@@ -314,6 +314,69 @@ optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
 
 
+def test_train_set():
+    model.eval()
+    num_correct = 0
+    num_samples = len(X_train)
+    confusion = torch.zeros(num_classes, num_classes)
+    expected_classes = []
+    predicted_classes = []
+    correct_guesses = []
+    incorrect_guesses = []
+    # print('////////////////////////////////////////')
+    # print('TEST SET')
+    with torch.no_grad():
+        for i in range(num_samples):
+            class_category = y_train_notencoded[i]
+            class_tensor = y_train[i]
+            input_sentence = X_train_notencoded[i]
+            input_tensor = X_train[i]
+
+            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
+            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+
+            # print('////////////////////////////////////////////')
+            # print('Test sample = ', input_sentence)
+
+            for j in range(input_tensor.size()[0]):
+                # print('input tensor[j][0] = ', input_tensor[j][0])
+
+                output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
+                    input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
+
+                # print('opening bracket count = ', opening_bracket_count)
+                # print('closing bracket count = ', closing_bracket_count)
+                # print('surplus closing bracket count = ', surplus_closing_bracket_count)
+                # print('output = ',output_tensor)
+
+            guess, guess_i = classFromOutput(output_tensor)
+            class_i = labels.index(class_category)
+            # print('predicted class = ', guess)
+            # print('actual class = ', class_category)
+            confusion[class_i][guess_i] += 1
+            predicted_classes.append(guess_i)
+            expected_classes.append(class_i)
+
+            if guess == class_category:
+                num_correct += 1
+                correct_guesses.append(input_sentence)
+            else:
+                incorrect_guesses.append(input_sentence)
+
+    accuracy = num_correct / num_samples * 100
+    # print('confusion matrix for test set \n', confusion)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    bottom1, top1 = heat.get_ylim()
+    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    # plt.show()
+    # print('correct guesses in testing = ', correct_guesses)
+    # print('incorrect guesses in testing = ', incorrect_guesses)
+    return accuracy
+
+
 def train():
     for epoch in range(num_epochs):
         shuffle = True
@@ -326,6 +389,15 @@ def train():
         predicted_classes = []
 
         print_flag=False
+
+        early_stopping = False
+        if test_train_set()==100:
+            early_stopping=True
+        if early_stopping==True:
+            all_losses.append('No training occurred')
+            epoch_accuracies.append('No training occurred')
+            break
+
         # initial_weights_counter.append(model.counter.weight.clone())
         # # initial_gradients_counter.append(model.counter.weight.grad.clone())
         # initial_biases_counter.append(model.counter.bias.clone())
@@ -494,6 +566,25 @@ def train():
     # plt.plot(epochs,all_losses)
     # plt.show()
 
+    if early_stopping==True:
+        weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
+        bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
+        weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
+        bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
+        weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
+        bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
+        weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
+        bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
+        weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
+        bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
+        weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
+        bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
+        weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
+        bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
+        weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
+        bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
+        weight_output_layer.append(model.out.weight.clone())
+        bias_output_layer.append(model.out.bias.clone())
 
     df1 = pandas.DataFrame()
     for i in range(len(epochs)):
@@ -554,7 +645,7 @@ def test():
     correct_guesses = []
     incorrect_guesses = []
     print('////////////////////////////////////////')
-    print('TEST WHOLE DATASET')
+    print('TEST SET')
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_test_notencoded[i]

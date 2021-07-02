@@ -81,7 +81,11 @@ def encode_sentence(sentence):
     return rep
 
 def encode_labels(label):
-    return torch.tensor([labels.index(label)], dtype=torch.float32)
+    # return torch.tensor([labels.index(label)], dtype=torch.float32)
+    if label=='empty':
+        return torch.tensor([1,0],dtype=torch.float32)
+    elif label=='not empty':
+        return torch.tensor([0,1],dtype=torch.float32)
 
 def encode_dataset(sentences, labels):
     encoded_sentences = []

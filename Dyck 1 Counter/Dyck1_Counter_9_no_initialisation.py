@@ -532,7 +532,7 @@ def train():
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
 
-    df1.to_excel('Dyck1_Counter_9_No_Initialisation_Clipping_L1.xlsx')
+    df1.to_excel('Dyck1_Counter_9_No_Initialisation_Clipping_L12.xlsx')
 
 
 train()
