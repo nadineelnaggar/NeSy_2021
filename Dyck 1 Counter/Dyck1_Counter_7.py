@@ -13,8 +13,8 @@ import pandas
 this is an implementation of the image Dyck1_Counter_6.png but with a sigmoid activation instead of softmax
 """
 
-document_name = 'Dyck1_Counter_7_Sigmoid_BCE_SGD_run_1.txt'
-excel_name = 'Dyck1_Counter_7_Sigmoid_BCE_SGD_run_1.xlsx'
+document_name = 'Dyck1_Counter_7_correct_weights_Sigmoid_BCE_SGD_run_3.txt'
+excel_name = 'Dyck1_Counter_7_correct_weights_Sigmoid_BCE_SGD_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -291,6 +291,7 @@ all_epoch_incorrect_guesses = []
 # initial_biases = []
 # final_biases = []
 epochs = []
+confusion_matrices = []
 # initial_weights_counter = []
 # initial_weights_hidden1 = []
 # initial_weights_hidden2 = []
@@ -454,6 +455,8 @@ def train():
 
         all_losses.append(current_loss/len(X_train))
         all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
+        conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+        confusion_matrices.append(conf_matrix)
 
         # final_weights_counter.append(model.counter.weight.clone())
         # final_gradients_counter.append(model.counter.weight.grad.clone())
@@ -559,6 +562,7 @@ def train():
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
+    df1['confusion matrices']=confusion_matrices
 
     # df1.to_excel('Dyck1_Counter_7_Sigmoid_BCE.xlsx')
     df1.to_excel(excel_name)

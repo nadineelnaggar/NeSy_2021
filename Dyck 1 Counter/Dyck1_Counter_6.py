@@ -13,8 +13,8 @@ this is an implementation of the image Dyck1_Counter_6.png
 """
 
 
-document_name = 'Dyck1_Counter_6_Softmax_BCE_SGD_run_1.txt'
-excel_name = 'Dyck1_Counter_6_Softmax_BCE_SGD_run_1.xlsx'
+document_name = 'Dyck1_Counter_6_correct_weights_Softmax_BCE_SGD_run_3.txt'
+excel_name = 'Dyck1_Counter_6_correct_weights_Softmax_BCE_SGD_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -713,9 +713,9 @@ def test_length():
     print('////////////////////////////////////////')
     print('TEST LENGTH DATASET')
 
-    # with open(document_name,'a') as f:
-    #     f.write('////////////////////////////////////////\n')
-    #     f.write('TEST LENGTH SET\n')
+    with open(document_name,'a') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST LENGTH SET\n')
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_length[i]

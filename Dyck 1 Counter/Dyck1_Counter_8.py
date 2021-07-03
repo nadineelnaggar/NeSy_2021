@@ -14,8 +14,8 @@ this is an implementation of the image Dyck1_Counter_6.png but with a clipping (
 for the output layer instead of a sigmoid/softmax activation and MSE loss function.
 """
 
-document_name = 'Dyck1_Counter_8_Clipping_MSE.txt'
-excel_name = 'Dyck1_Counter_8_Clipping_MSE.xlsx'
+document_name = 'Dyck1_Counter_8_correct_weights_Clipping_MSE_SGD_run_3.txt'
+excel_name = 'Dyck1_Counter_8_correct_weights_Clipping_MSE_SGD_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -287,6 +287,7 @@ all_epoch_incorrect_guesses = []
 # initial_biases = []
 # final_biases = []
 epochs = []
+confusion_matrices=[]
 # initial_weights_counter = []
 # initial_weights_hidden1 = []
 # initial_weights_hidden2 = []
@@ -449,6 +450,9 @@ def train():
 
         all_losses.append(current_loss/len(X_train))
         all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
+        conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+        confusion_matrices.append(conf_matrix)
+
 
         # final_weights_counter.append(model.counter.weight.clone())
         # final_gradients_counter.append(model.counter.weight.grad.clone())
@@ -554,6 +558,7 @@ def train():
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
+    df1['confusion matrices']=confusion_matrices
 
     # df1.to_excel('Dyck1_Counter_8_Clipping_MSE.xlsx')
     df1.to_excel(excel_name)
