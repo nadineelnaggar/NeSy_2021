@@ -3,6 +3,33 @@
   <component name="ChangeListManager">
     <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_3.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_3.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_1.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_3.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_3.xlsx" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -181,7 +208,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="137234000" />
+      <workItem from="1624557572974" duration="138644000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -442,7 +469,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625237952150</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="Move log files to separate folders">
+      <created>1625318890487</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1625318890489</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +515,8 @@
     <MESSAGE value="Fixing Dyck1_Counter_9_early_stopping to evaluate training set before training and stopping if no training is needed" />
     <MESSAGE value="Rerunning and recording runs of models with correctly initialised weights (early stopping and otherwise)" />
     <MESSAGE value="Rerunning and recording runs of models with randomly initialised weights" />
-    <option name="LAST_COMMIT_MESSAGE" value="Rerunning and recording runs of models with randomly initialised weights" />
+    <MESSAGE value="Move log files to separate folders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Move log files to separate folders" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

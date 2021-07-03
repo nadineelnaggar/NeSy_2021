@@ -734,15 +734,15 @@ def test_length():
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
 
-            with open(document_name,'a') as f:
-                f.write('////////////////////////////////////////////\n')
-                f.write('Test sample '+input_sentence+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('////////////////////////////////////////////\n')
+            #     f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
 
-                with open(document_name, 'a') as f:
-                    f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
+                # with open(document_name, 'a') as f:
+                #     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
@@ -752,11 +752,11 @@ def test_length():
                 # print('surplus closing bracket count = ', surplus_closing_bracket_count)
                 # print('output = ',output_tensor)
 
-                with open(document_name,'a') as f:
-                    f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
-                    f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
-                    f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
-                    f.write('output = '+str(output_tensor)+'\n')
+                # with open(document_name,'a') as f:
+                #     f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
+                #     f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
+                #     f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
+                #     f.write('output = '+str(output_tensor)+'\n')
 
             guess, guess_i = classFromOutput(output_tensor)
             class_i = labels.index(class_category)
@@ -766,9 +766,9 @@ def test_length():
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
 
-            with open(document_name,'a') as f:
-                f.write('predicted class = '+guess+'\n')
-                f.write('actual class = '+class_category+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('predicted class = '+guess+'\n')
+            #     f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
