@@ -12,8 +12,8 @@ import pandas
 this is an implementation of the image Dyck1_Counter_6.png
 """
 
-document_name = 'Dyck1_Counter_6_early_stopping_Softmax_BCE.txt'
-excel_name = 'Dyck1_Counter_6_early_stopping_Softmax_BCE.xlsx'
+document_name = 'Dyck1_Counter_6_early_stopping_Softmax_BCE_SGD_run_1.txt'
+excel_name = 'Dyck1_Counter_6_early_stopping_Softmax_BCE_SGD_run_1.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -282,6 +282,7 @@ all_epoch_incorrect_guesses = []
 # initial_biases = []
 # final_biases = []
 epochs = []
+early_stop = []
 # initial_weights_counter = []
 # initial_weights_hidden1 = []
 # initial_weights_hidden2 = []
@@ -389,9 +390,9 @@ def test_train_set():
     accuracy = num_correct / num_samples * 100
     # print('confusion matrix for test set \n', confusion)
     conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-    bottom1, top1 = heat.get_ylim()
-    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    # bottom1, top1 = heat.get_ylim()
+    # heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
     # plt.show()
     # print('correct guesses in testing = ', correct_guesses)
@@ -416,11 +417,35 @@ def train():
         test_train_set_accuracy = test_train_set()
         if test_train_set_accuracy == 100:
             early_stopping = True
+        print('early stopping for epoch ',epoch,' = ',early_stopping)
+        early_stop.append(early_stopping)
         if early_stopping == True:
             all_losses.append(0)
             epoch_accuracies.append(test_train_set_accuracy)
             all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
-            break
+
+            weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
+            bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
+            weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
+            bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
+            weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
+            bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
+            weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
+            bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
+            weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
+            bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
+            weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
+            bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
+            weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
+            bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
+            weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
+            bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
+            weight_output_layer.append(model.out.weight.clone())
+            bias_output_layer.append(model.out.bias.clone())
+
+            # early_stop.append(early_stopping)
+            # pass
+            continue
 
         # initial_weights_counter.append(model.counter.weight.clone())
         # # initial_gradients_counter.append(model.counter.weight.grad.clone())
@@ -454,7 +479,8 @@ def train():
         #     print('initial output bias = ',model.l3n1.bias)
 
         for i in range(len(X_train)):
-
+            # if early_stopping==True:
+            #     break
             optimiser.zero_grad()
             correct = False
             if shuffle==False:
@@ -547,25 +573,25 @@ def train():
 
 
         # print('loss = ', loss.item())
-
-        weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
-        bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
-        weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
-        bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
-        weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
-        bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
-        weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
-        bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
-        weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
-        bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
-        weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
-        bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
-        weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
-        bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
-        weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
-        bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
-        weight_output_layer.append(model.out.weight.clone())
-        bias_output_layer.append(model.out.bias.clone())
+        if early_stopping==False:
+            weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
+            bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
+            weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
+            bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
+            weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
+            bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
+            weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
+            bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
+            weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
+            bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
+            weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
+            bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
+            weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
+            bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
+            weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
+            bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
+            weight_output_layer.append(model.out.weight.clone())
+            bias_output_layer.append(model.out.bias.clone())
 
         if epoch==(num_epochs-1):
             print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
@@ -590,25 +616,25 @@ def train():
     # plt.plot(epochs,all_losses)
     # plt.show()
 
-    if early_stopping==True:
-        weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
-        bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
-        weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
-        bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
-        weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
-        bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
-        weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
-        bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
-        weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
-        bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
-        weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
-        bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
-        weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
-        bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
-        weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
-        bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
-        weight_output_layer.append(model.out.weight.clone())
-        bias_output_layer.append(model.out.bias.clone())
+    # if early_stopping==True:
+    #     weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
+    #     bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
+    #     weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
+    #     bias_closing_bracket_filter.append(model.closing_filter.bias.clone())
+    #     weight_opening_bracket_counter.append(model.opening_bracket_counter.weight.clone())
+    #     bias_opening_bracket_counter.append(model.opening_bracket_counter.bias.clone())
+    #     weight_closing_bracket_counter.append(model.closing_bracket_counter.weight.clone())
+    #     bias_closing_bracket_counter.append(model.closing_bracket_counter.bias.clone())
+    #     weight_opening_minus_closing.append(model.opening_minus_closing.weight.clone())
+    #     bias_opening_minus_closing.append(model.opening_minus_closing.bias.clone())
+    #     weight_opening_minus_closing_copy.append(model.opening_minus_closing_copy.weight.clone())
+    #     bias_opening_minus_closing_copy.append(model.opening_minus_closing_copy.bias.clone())
+    #     weight_closing_minus_opening.append(model.closing_minus_opening.weight.clone())
+    #     bias_closing_minus_opening.append(model.closing_minus_opening.bias.clone())
+    #     weight_surplus_closing_bracket_count.append(model.closing_bracket_surplus.weight.clone())
+    #     bias_surplus_closing_bracket_count.append(model.closing_bracket_surplus.bias.clone())
+    #     weight_output_layer.append(model.out.weight.clone())
+    #     bias_output_layer.append(model.out.bias.clone())
 
     df1 = pandas.DataFrame()
     for i in range(len(epochs)):
@@ -653,6 +679,7 @@ def train():
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
+    df1['early stopping'] = early_stop
 
     # df1.to_excel('Dyck1_Counter_6_early_stopping_Softmax_BCE.xlsx')
     df1.to_excel(excel_name)
@@ -825,14 +852,14 @@ def test_length():
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
 
-            with open(document_name,'a') as f:
-                f.write('////////////////////////////////////////////\n')
-                f.write('Test sample '+input_sentence+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('////////////////////////////////////////////\n')
+            #     f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
-                with open(document_name, 'a') as f:
-                    f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
+                # with open(document_name, 'a') as f:
+                #     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
@@ -841,11 +868,11 @@ def test_length():
                 # print('closing bracket count = ', closing_bracket_count)
                 # print('surplus closing bracket count = ', surplus_closing_bracket_count)
                 # print('output = ',output_tensor)
-                with open(document_name,'a') as f:
-                    f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
-                    f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
-                    f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
-                    f.write('output = '+str(output_tensor)+'\n')
+                # with open(document_name,'a') as f:
+                #     f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
+                #     f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
+                #     f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
+                #     f.write('output = '+str(output_tensor)+'\n')
 
             guess, guess_i = classFromOutput(output_tensor)
             class_i = labels.index(class_category)
@@ -855,9 +882,9 @@ def test_length():
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
 
-            with open(document_name,'a') as f:
-                f.write('predicted class = '+guess+'\n')
-                f.write('actual class = '+class_category+'\n')
+            # with open(document_name,'a') as f:
+            #     f.write('predicted class = '+guess+'\n')
+            #     f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
