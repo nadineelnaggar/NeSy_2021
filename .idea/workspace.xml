@@ -2,35 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation_Softmax_BCE_run_3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation_Sigmoid_BCE_run_3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_No_Initialisation_Clipping_MSE_run_3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_1.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_2.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_3.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_No_Initialisation_Clipping_L1_run_3.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_no_initialisation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_7_no_initialisation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_no_initialisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_no_initialisation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_no_initialisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_9_no_initialisation.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,15 +21,13 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1uPBvBAvVduiadGyTWyDzm8pJP9" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/Dyck 1 Counter" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -211,7 +181,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="135474000" />
+      <workItem from="1624557572974" duration="137234000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -465,7 +435,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625233848007</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Rerunning and recording runs of models with randomly initialised weights">
+      <created>1625237952149</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1625237952150</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
