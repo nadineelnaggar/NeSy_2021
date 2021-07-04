@@ -8,8 +8,8 @@ import seaborn as sns
 import random
 import matplotlib.pyplot as plt
 
-document_name = 'Dyck1_Counter_10_early_stopping_Sigmoid_BCE_run_1.txt'
-excel_name = 'Dyck1_Counter_10_early_stopping_Sigmoid_BCE_run_1.xlsx'
+document_name = 'Dyck1_Counter_11_no_initialisation_Clipping_MSEE_run_3.txt'
+excel_name = 'Dyck1_Counter_11_no_initialisation_Clipping_MSE_run_3.xlsx'
 
 num_epochs = 1000
 max_length = 2
@@ -88,11 +88,11 @@ class Counter(nn.Module):
         # self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.counter = nn.Linear(counter_input_size,counter_output_size)
         # self.counter.weight = nn.Parameter(torch.tensor([[1,0,1],[0,-1,1]],dtype=torch.float32))
-        self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
-        self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        # self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
+        # self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.fc2 = nn.Linear(counter_output_size,output_size)
-        self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
-        self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        # self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
+        # self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.out = nn.Sigmoid()
 
     def forward(self,x,previous_count):
@@ -101,7 +101,8 @@ class Counter(nn.Module):
         x = self.counter(combined)
         previous_count=x
         x = self.fc2(x)
-        x = self.out(x)
+        # x = self.out(x)
+        x = torch.clamp(x,min=0,max=1)
         return x, previous_count
 
 model = Counter(input_size,hidden_size, counter_input_size, counter_output_size,output_size)
@@ -201,8 +202,8 @@ print('test accuracy = ', test_whole_dataset())
 # initial_counter_weights = model.counter.weight.clone().detach().numpy()
 
 learning_rate = 0.005
-# criterion = nn.MSELoss()
-criterion = nn.BCELoss()
+criterion = nn.MSELoss()
+# criterion = nn.BCELoss()
 optimiser = optim.SGD(model.parameters(),lr=learning_rate)
 
 def train(input_tensor, class_tensor, input_sentence='', print_flag=False):
@@ -234,8 +235,6 @@ all_epoch_incorrect_guesses = []
 df1 = pandas.DataFrame()
 epochs = []
 confusion_matrices = []
-early_stop = []
-# epoch_accuracies = []
 
 weights_input_layer = []
 weights_counter = []
@@ -264,78 +263,7 @@ gradient_3_counter = []
 accuracies = []
 gradients = []
 
-def test_train_set():
-    model.eval()
-    num_correct = 0
-    num_samples = len(X_train)
-    confusion = torch.zeros(num_classes, num_classes)
-    expected_classes = []
-    predicted_classes = []
-    correct_guesses = []
-    incorrect_guesses = []
-    # with open(document_name, 'w') as f:
-    #     f.write('////////////////////////////////////////\n')
-    #     f.write('TEST WHOLE DATASET\n')
-    # print('////////////////////////////////////////')
-    # print('TEST WHOLE DATASET')
-    with torch.no_grad():
-        for i in range(num_samples):
-            class_category = y_train_notencoded[i]
-            class_tensor = y_train[i]
-            input_sentence = X_train_notencoded[i]
-            input_tensor = X_train[i]
 
-            # print('////////////////////////////////////////////')
-            # print('Test sample = ', input_sentence)
-            # with open(document_name, 'a') as f:
-            #     f.write('////////////////////////////////////////////\n')
-            #     f.write('Test sample = ' + input_sentence + '\n')
-            count = torch.tensor([0], dtype=torch.float32)
-            for j in range(input_tensor.size()[0]):
-                # print('input tensor[j][0] = ', input_tensor[j][0])
-                # with open(document_name, 'a') as f:
-                #     f.write('input tensor[j][0] = ' + input_sentence[j][0] + '\n')
-
-                output, count = model(input_tensor[j][0], count)
-                # print('count = ',count)
-                # print('output = ',output)
-                # with open(document_name, 'a') as f:
-                #     f.write('count = ' + str(count) + '\n')
-                #     f.write('output = ' + str(output) + '\n')
-
-            guess, guess_i = classFromOutput(output)
-            class_i = labels.index(class_category)
-            # print('predicted class = ', guess)
-            # print('actual class = ', class_category)
-            # with open(document_name, 'a') as f:
-            #     f.write('predicted class = ' + guess + '\n')
-            #     f.write('actual class = ' + class_category + '\n')
-            confusion[class_i][guess_i] += 1
-            predicted_classes.append(guess_i)
-            expected_classes.append(class_i)
-
-            if guess == class_category:
-                num_correct += 1
-                correct_guesses.append(input_sentence)
-            else:
-                incorrect_guesses.append(input_sentence)
-
-    accuracy = num_correct / num_samples * 100
-    # print('confusion matrix for test  set \n', confusion)
-    # conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-    # heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-    # bottom1, top1 = heat.get_ylim()
-    # heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
-    # plt.show()
-    # print('correct guesses in testing = ', correct_guesses)
-    # print('incorrect guesses in testing = ', incorrect_guesses)
-    # with open(document_name, 'a') as f:
-    #     f.write('confusion matrix for test set \n' + str(confusion) + '\n')
-    #     f.write('correct guesses in testing = ' + str(correct_guesses) + '\n')
-    #     f.write('incorrect guesses in testing = ' + str(incorrect_guesses) + '\n')
-    #     f.write('accuracy = ' + str(accuracy) + '\n')
-    return accuracy
 
 for epoch in range(num_epochs):
     confusion = torch.zeros(num_classes, num_classes)
@@ -346,23 +274,6 @@ for epoch in range(num_epochs):
     predicted_classes = []
     expected_classes = []
     epochs.append(epoch)
-
-    early_stopping = False
-    test_train_set_accuracy = test_train_set()
-    if test_train_set_accuracy == 100:
-        early_stopping = True
-
-    print('early stopping for epoch ', epoch, ' = ', early_stopping)
-    early_stop.append(early_stopping)
-    if early_stopping == True:
-        all_losses.append(0)
-        accuracies.append(test_train_set_accuracy)
-        all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
-        weights_counter.append(model.counter.weight.clone())
-        biases_counter.append(model.counter.bias.clone())
-        weights_output_layer.append(model.fc2.weight.clone())
-        biases_output_layer.append(model.fc2.bias.clone())
-        continue
 
     for i in range(len(X_train)):
         input_tensor = X_train[i]
@@ -412,19 +323,16 @@ for epoch in range(num_epochs):
     conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
     confusion_matrices.append(conf_matrix)
 
-    if early_stopping==False:
-        accuracies.append(accuracy)
-        # weights_input_layer.append(model.fc1.weight.clone())
-        weights_output_layer.append(model.fc2.weight.clone())
-        # gradients_input_layer.append(model.fc1.weight.grad.clone())
-        # gradients_output_layer.append(model.fc2.weight.grad.clone())
-        weights_counter.append(model.counter.weight.clone())
-        # gradients_counter.append(model.counter.weight.grad.clone())
-        # gradients.append(input_tensor.grad.clone())
-        biases_counter.append(model.counter.bias.clone())
-        biases_output_layer.append(model.fc2.bias.clone())
-        # all_losses.append(loss)
-
+    accuracies.append(accuracy)
+    # weights_input_layer.append(model.fc1.weight.clone())
+    weights_output_layer.append(model.fc2.weight.clone())
+    # gradients_input_layer.append(model.fc1.weight.grad.clone())
+    gradients_output_layer.append(model.fc2.weight.grad.clone())
+    weights_counter.append(model.counter.weight.clone())
+    gradients_counter.append(model.counter.weight.grad.clone())
+    gradients.append(input_tensor.grad.clone())
+    biases_counter.append(model.counter.bias.clone())
+    biases_output_layer.append(model.fc2.bias.clone())
 
     if epoch == num_epochs - 1:
         print('\n////////////////////////////////////////////////////////////////////////////////////////\n')
@@ -486,10 +394,148 @@ df1['output layer biases'] = biases_output_layer
 df1['losses'] = all_losses
 df1['epoch accuracies'] = accuracies
 df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
-df1['early stopping']=early_stop
-# df1['confusion matrices'] = confusion_matrices
+df1['confusion matrices'] = confusion_matrices
 
 df1.to_excel(excel_name)
+
+# df1.to_excel('Dyck1_Counter_10_Sigmoid_BCE.xlsx')
+
+#
+# df1['weight_11_input_layer'] = weight_11_input_layer
+# df1['weight_12_input_layer'] = weight_12_input_layer
+# df1['weight_21_input_layer'] = weight_21_input_layer
+# df1['weight_22_input_layer'] = weight_22_input_layera
+# # df1['gradient_11_input_layer'] = gradient_11_input_layer
+# # df1['gradient_12_input_layer'] = gradient_12_input_layer
+# # df1['gradient_21_input_layer'] = gradient_21_input_layer
+# # df1['gradient_22_input_layer'] = gradient_22_input_layer
+# df1['weight_1_counter'] = weight_1_counter
+# df1['weight_2_counter'] = weight_2_counter
+# df1['weight_3_counter'] = weight_3_counter
+# df1['gradient_1_counter'] = gradient_1_counter
+# df1['gradient_2_counter'] = gradient_2_counter
+# df1['gradient_3_counter'] = gradient_3_counter
+# df1['weight_output_layer'] = weights_output_layer
+# df1['gradient_output_layer'] = gradients_output_layer
+# df1['accuracies'] = accuracies
+# df1['losses'] = all_losses
+#
+# epochs = []
+# for i in range(num_epochs):
+#     epochs.append(i)
+#
+# fig = plt.figure()
+# plt.plot(epochs, weight_11_input_layer, label='Input Layer Increment Weight 1 (W11)')
+# plt.plot(epochs, weight_12_input_layer, label='Input Layer Increment Weight 2 (W12)')
+# plt.plot(epochs, weight_21_input_layer, label='Input Layer Decrement Weight 1 (W21)')
+# plt.plot(epochs, weight_22_input_layer, label='Input Layer Decrement Weight 2 (W22)')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Value')
+# plt.legend(loc='lower center')
+# # plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Weights.png')
+# plt.show()
+#
+# fig2 = plt.figure()
+# plt.plot(epochs, weight_1_counter, label='Counter Weight 1')
+# plt.plot(epochs, weight_2_counter, label='Counter Weight 2')
+# plt.plot(epochs, weight_3_counter, label='Counter Weight 3')
+# plt.plot(epochs, weights_output_layer, label='Output Layer Weight ')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Weights.png')
+# plt.show()
+#
+# fig3 = plt.figure()
+# plt.plot(epochs, gradient_11_input_layer, label='Gradient for Increment Input 1')
+# plt.plot(epochs, gradient_12_input_layer, label='Gradient for Increment Input 2')
+# plt.plot(epochs, gradient_21_input_layer, label='Gradient for Decrement Input 1')
+# plt.plot(epochs, gradient_22_input_layer, label='Gradient for Decrement Input 2')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Gradient Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Input_Layer_Gradients.png')
+# plt.show()
+#
+#
+# fig3 = plt.figure()
+# plt.plot(epochs, gradient_1_counter, label='Counter Weight Gradient 1')
+# plt.plot(epochs, gradient_2_counter, label='Counter Weight Gradient 2')
+# plt.plot(epochs, gradient_3_counter, label='Counter Weight Gradient 3')
+# plt.xlabel('Epoch')
+# plt.ylabel('Weight Gradient Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Counter_and_Output_Layer_Gradients.png')
+# plt.show()
+#
+# fig4 = plt.figure()
+# plt.plot(epochs, accuracies, label='Training Accuracies')
+# plt.plot(epochs, all_losses, label='Losses')
+# plt.xlabel('Epoch')
+# plt.ylabel('Value')
+# plt.legend(loc='lower center')
+# fig.subplots_adjust(bottom=0.5)
+# # plt.savefig('Counter_Sigmoid_Plot_Accuracies_and_Losses.png')
+# plt.show()
+#
+#
+# df1.to_excel('Counter_Sigmoid.xlsx')
+#
+# weight_1 = []
+# weight_2 = []
+# u = []
+# v = []
+#
+# for i in range(len(gradient_11_input_layer)):
+#     if gradient_11_input_layer[i]!=0 or gradient_12_input_layer!=0:
+#         weight_1.append(weight_11_input_layer[i])
+#         weight_2.append(weight_12_input_layer[i])
+#         u.append(gradient_11_input_layer[i])
+#         v.append(gradient_12_input_layer[i])
+#
+# xaxis = np.arange(-2,2,0.2)
+# yaxis=np.arange(-2,2,0.2)
+#
+# A, B = np.meshgrid(weight_1, weight_2)
+# fig5, ax = plt.subplots()
+# ax.quiver(A, B, u, v)
+# ax.xaxis.set_ticks(xaxis)
+# ax.yaxis.set_ticks(yaxis)
+# plt.xticks(rotation=90)
+# plt.xlabel('Input Layer Weight 11 (Increment Weight 1)')
+# plt.ylabel('Input Layer Weight 12 (Increment Weight 2)')
+# # plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W11_W12.png')
+# plt.show()
+#
+#
+# weight_1 = []
+# weight_2 = []
+# u = []
+# v = []
+#
+# for i in range(len(gradient_21_input_layer)):
+#     if gradient_21_input_layer[i]!=0 or gradient_22_input_layer!=0:
+#         weight_1.append(weight_21_input_layer[i])
+#         weight_2.append(weight_22_input_layer[i])
+#         u.append(gradient_21_input_layer[i])
+#         v.append(gradient_22_input_layer[i])
+#
+# xaxis = np.arange(-2,2,0.2)
+# yaxis=np.arange(-2,2,0.2)
+#
+# A, B = np.meshgrid(weight_1, weight_2)
+# fig5, ax = plt.subplots()
+# ax.quiver(A, B, u, v)
+# ax.xaxis.set_ticks(xaxis)
+# ax.yaxis.set_ticks(yaxis)
+# plt.xticks(rotation=90)
+# plt.xlabel('Input Layer Weight 21 (Decrement Weight 1)')
+# plt.ylabel('Input Layer Weight 22 (Decrement Weight 2)')
+# # plt.savefig('Counter_Sigmoid_Vector_Field_Input_Layer_W21_W22.png')
+# plt.show()
 
 
 
@@ -572,6 +618,23 @@ def test():
 print('test accuracy = ', test())
 
 
+# X_length = ['()()','(()(',')()(', '((()',')))(','((((', '((()))','(())((','(())(())', '((((()))']
+# y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty']
+#
+#
+#
+# def encode_sentence_length(sentence):
+#     rep = torch.zeros(8, 1, n_letters)
+#     # if len(sentence) < max_length:
+#     #     for index, char in enumerate(sentence):
+#     #         pos = vocab.index(char)
+#     #         rep[index][0][pos] = 1
+#     # else:
+#     for index, char in enumerate(sentence):
+#         pos = vocab.index(char)
+#         rep[index][0][pos] = 1
+#     rep.requires_grad_(True)
+#     return rep
 
 X_length = ['()()','(()(',')()(', '((()',')))(','((((', '((()))','(())((','(())(())','((((()))','()()()()(())',')))(((()((', '((((()))))(())(())()','((()((()()((())(())(','(((((((((((((((((((())))))))))','(())(())(())((()))((()))((()))','))(()(((()(())()((())()(())()(','(((((((())))((()(()()((()()))(()((()()(()((())(()())()(()(()','))(())()((())(())()((()))((()))(())(())(())(())((']
 y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty','not empty', 'empty', 'not empty','not empty','empty', 'not empty', 'not empty', 'not empty']
@@ -695,9 +758,40 @@ print('test accuracy = ', test_length())
 # import random
 # import matplotlib.pyplot as plt
 #
-#
-# document_name = 'Dyck1_Counter_10_early_stopping_Sigmoid_BCE_run_1.txt'
-# excel_name = 'Dyck1_Counter_9_early_stopping_Sigmoid_BCE_run_1.xlsx'
+# # input_size = 2
+# # counter_rec_input_size = 1
+# # counter_output_size = 1
+# # output_size = 1
+# #
+# # class Net(nn.Module):
+# #     def __init__(self, input_size, counter_rec_input_size, counter_output_size, output_size):
+# #         super(Net, self).__init__()
+# #         self.counter = nn.Linear(input_size+counter_rec_input_size,counter_output_size)
+# #         self.out = nn.Linear(counter_output_size,output_size)
+# #         self.sig = nn.Sigmoid()
+# #
+# #     def forward(self,x,counter_rec_input):
+# #         counter_combined = torch.cat((x,counter_rec_input))
+# #         counter_combined = self.counter(counter_combined)
+# #         counter_rec_output = counter_combined
+# #         out = self.out(counter_combined)
+# #         out = self.sig(out)
+# #         return out, counter_rec_output
+# #
+# #
+# #
+# # import torch
+# # import torch.nn as nn
+# # import torch.optim as optim
+# # import sklearn
+# # from sklearn.model_selection import train_test_split
+# # import matplotlib.pyplot as plt
+# # import numpy as np
+# # import pandas
+# # import seaborn as sns
+# #
+# #
+# #
 #
 # num_epochs = 1000
 # max_length = 2
@@ -776,11 +870,11 @@ print('test accuracy = ', test_length())
 #         # self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
 #         self.counter = nn.Linear(counter_input_size,counter_output_size)
 #         # self.counter.weight = nn.Parameter(torch.tensor([[1,0,1],[0,-1,1]],dtype=torch.float32))
-#         self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
-#         self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+#         # self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
+#         # self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
 #         self.fc2 = nn.Linear(counter_output_size,output_size)
-#         self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
-#         self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+#         # self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
+#         # self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
 #         self.out = nn.Sigmoid()
 #
 #     def forward(self,x,previous_count):
@@ -926,8 +1020,6 @@ print('test accuracy = ', test_length())
 #         # print('counter weight gradients = ',model.counter.weight.grad)
 #
 #     print('Accuracy for epoch ', epoch, '=', accuracy, '%')
-#     if epoch==0 or(epoch+1)%10==0:
-#         print('loss = ',loss)
 #     all_losses.append(current_loss / len(X_train))
 #     all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
 #
@@ -962,21 +1054,11 @@ print('test accuracy = ', test_length())
 #             print('counter weight gradient = ',model.counter.weight.grad)
 #             print('output layer weight = ', model.fc2.weight)
 #             print('output layer weight gradient = ', model.fc2.weight.grad)
-#     if accuracy == 100:
-#         print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
-#         conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
-#         heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
-#         bottom1, top1 = heat.get_ylim()
-#         heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
-#         print('confusion matrix for training set = \n', conf_matrix)
-#         # plt.show()
-#         print(all_epoch_incorrect_guesses)
-#         break
 #
 #
 # print('all incorrect guesses in training across all epochs = \n', all_epoch_incorrect_guesses)
 #
-# for i in range(len(weights_counter)):
+# for i in range(len(weights_input_layer)):
 #     # weights_input_layer[i] = weights_input_layer[i].detach().numpy()
 #     weights_output_layer[i] = weights_output_layer[i].detach().numpy()
 #     weights_counter[i] = weights_counter[i].detach().numpy()
@@ -1008,14 +1090,13 @@ print('test accuracy = ', test_length())
 # df1['losses'] = all_losses
 # df1['epoch accuracies'] = accuracies
 #
-# # df1.to_excel('Dyck1_Counter_10_early_stopping_Sigmoid_BCE.xlsx')
-# df1.to_excel(excel_name)
+# df1.to_excel('Dyck1_Counter_10_no_initialisation_Sigmoid_BCE.xlsx')
 #
 # #
 # # df1['weight_11_input_layer'] = weight_11_input_layer
 # # df1['weight_12_input_layer'] = weight_12_input_layer
 # # df1['weight_21_input_layer'] = weight_21_input_layer
-# # df1['weight_22_input_layer'] = weight_22_input_layer
+# # df1['weight_22_input_layer'] = weight_22_input_layera
 # # # df1['gradient_11_input_layer'] = gradient_11_input_layer
 # # # df1['gradient_12_input_layer'] = gradient_12_input_layer
 # # # df1['gradient_21_input_layer'] = gradient_21_input_layer
@@ -1207,6 +1288,24 @@ print('test accuracy = ', test_length())
 #
 # print('test accuracy = ', test())
 #
+#
+# # X_length = ['()()','(()(',')()(', '((()',')))(','((((', '((()))','(())((','(())(())', '((((()))']
+# # y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty']
+# #
+# #
+# #
+# # def encode_sentence_length(sentence):
+# #     rep = torch.zeros(8, 1, n_letters)
+# #     # if len(sentence) < max_length:
+# #     #     for index, char in enumerate(sentence):
+# #     #         pos = vocab.index(char)
+# #     #         rep[index][0][pos] = 1
+# #     # else:
+# #     for index, char in enumerate(sentence):
+# #         pos = vocab.index(char)
+# #         rep[index][0][pos] = 1
+# #     rep.requires_grad_(True)
+# #     return rep
 #
 # X_length = ['()()','(()(',')()(', '((()',')))(','((((', '((()))','(())((','(())(())','((((()))','()()()()(())',')))(((()((', '((((()))))(())(())()','((()((()()((())(())(','(((((((((((((((((((())))))))))','(())(())(())((()))((()))((()))','))(()(((()(())()((())()(())()(','(((((((())))((()(()()((()()))(()((()()(()((())(()())()(()(()','))(())()((())(())()((()))((()))(())(())(())(())((']
 # y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty','not empty', 'empty', 'not empty','not empty','empty', 'not empty', 'not empty', 'not empty']

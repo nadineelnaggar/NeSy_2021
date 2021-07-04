@@ -8,40 +8,8 @@ import seaborn as sns
 import random
 import matplotlib.pyplot as plt
 
-# input_size = 2
-# counter_rec_input_size = 1
-# counter_output_size = 1
-# output_size = 1
-#
-# class Net(nn.Module):
-#     def __init__(self, input_size, counter_rec_input_size, counter_output_size, output_size):
-#         super(Net, self).__init__()
-#         self.counter = nn.Linear(input_size+counter_rec_input_size,counter_output_size)
-#         self.out = nn.Linear(counter_output_size,output_size)
-#         self.sig = nn.Sigmoid()
-#
-#     def forward(self,x,counter_rec_input):
-#         counter_combined = torch.cat((x,counter_rec_input))
-#         counter_combined = self.counter(counter_combined)
-#         counter_rec_output = counter_combined
-#         out = self.out(counter_combined)
-#         out = self.sig(out)
-#         return out, counter_rec_output
-#
-#
-#
-# import torch
-# import torch.nn as nn
-# import torch.optim as optim
-# import sklearn
-# from sklearn.model_selection import train_test_split
-# import matplotlib.pyplot as plt
-# import numpy as np
-# import pandas
-# import seaborn as sns
-#
-#
-#
+document_name = 'Dyck1_Counter_10_correct_weights_Sigmoid_BCE_run_3.txt'
+excel_name = 'Dyck1_Counter_10_correct_weights_Sigmoid_BCE_run_3.xlsx'
 
 num_epochs = 1000
 max_length = 2
@@ -137,19 +105,97 @@ class Counter(nn.Module):
         return x, previous_count
 
 model = Counter(input_size,hidden_size, counter_input_size, counter_output_size,output_size)
-print(model.counter.weight)
-test_input = torch.tensor([1,0],dtype=torch.float32)
-test_input_2 = torch.tensor([0,1],dtype=torch.float32)
-count = torch.tensor([0],dtype=torch.float32)
-op, count = model(test_input,count)
-print(op)
-print(count)
-op, count = model(test_input_2,count)
-print(op)
-print(count)
-op, count = model(test_input_2,count)
-print(op)
-print(count)
+# print(model.counter.weight)
+# test_input = torch.tensor([1,0],dtype=torch.float32)
+# test_input_2 = torch.tensor([0,1],dtype=torch.float32)
+# count = torch.tensor([0],dtype=torch.float32)
+# op, count = model(test_input,count)
+# print(op)
+# print(count)
+# op, count = model(test_input_2,count)
+# print(op)
+# print(count)
+# op, count = model(test_input_2,count)
+# print(op)
+# print(count)
+
+
+def test_whole_dataset():
+    model.eval()
+    num_correct = 0
+    num_samples = len(X)
+    confusion = torch.zeros(num_classes, num_classes)
+    expected_classes = []
+    predicted_classes = []
+    correct_guesses = []
+    incorrect_guesses = []
+    with open(document_name,'w') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST WHOLE DATASET\n')
+    print('////////////////////////////////////////')
+    print('TEST WHOLE DATASET')
+    with torch.no_grad():
+        for i in range(num_samples):
+            class_category = y[i]
+            class_tensor = y_encoded[i]
+            input_sentence = X[i]
+            input_tensor = X_encoded[i]
+
+            print('////////////////////////////////////////////')
+            print('Test sample = ', input_sentence)
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                f.write('Test sample = '+input_sentence+'\n')
+            count = torch.tensor([0],dtype=torch.float32)
+            for j in range(input_tensor.size()[0]):
+                # print('input tensor[j][0] = ', input_tensor[j][0])
+                with open(document_name,'a') as f:
+                    f.write('input tensor[j][0] = '+input_sentence[j][0]+'\n')
+
+                output, count = model(input_tensor[j][0],count)
+                # print('count = ',count)
+                # print('output = ',output)
+                with open(document_name,'a') as f:
+                    f.write('count = '+str(count)+'\n')
+                    f.write('output = '+str(output)+'\n')
+
+            guess, guess_i = classFromOutput(output)
+            class_i = labels.index(class_category)
+            print('predicted class = ', guess)
+            print('actual class = ', class_category)
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
+            confusion[class_i][guess_i] += 1
+            predicted_classes.append(guess_i)
+            expected_classes.append(class_i)
+
+            if guess == class_category:
+                num_correct += 1
+                correct_guesses.append(input_sentence)
+            else:
+                incorrect_guesses.append(input_sentence)
+
+    accuracy = num_correct / num_samples * 100
+    print('confusion matrix for test set \n', confusion)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    heat = sns.heatmap(conf_matrix, xticklabels=labels, yticklabels=labels, annot=True, fmt="d")
+    bottom1, top1 = heat.get_ylim()
+    heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
+    # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
+    # plt.show()
+    print('correct guesses in testing = ', correct_guesses)
+    print('incorrect guesses in testing = ', incorrect_guesses)
+    with open(document_name, 'a') as f:
+        f.write('confusion matrix for test set \n' + str(confusion) + '\n')
+        f.write('correct guesses in testing = ' + str(correct_guesses) + '\n')
+        f.write('incorrect guesses in testing = ' + str(incorrect_guesses) + '\n')
+        f.write('accuracy = ' + str(accuracy) + '\n')
+    return accuracy
+
+
+print('test accuracy = ', test_whole_dataset())
+
 
 # initial_input_layer_weights = model.fc1.weight.clone().detach().numpy()
 # initial_counter_weights = model.counter.weight.clone().detach().numpy()
@@ -187,6 +233,7 @@ current_loss = 0
 all_epoch_incorrect_guesses = []
 df1 = pandas.DataFrame()
 epochs = []
+confusion_matrices = []
 
 weights_input_layer = []
 weights_counter = []
@@ -272,6 +319,8 @@ for epoch in range(num_epochs):
     print('Accuracy for epoch ', epoch, '=', accuracy, '%')
     all_losses.append(current_loss / len(X_train))
     all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
+    conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
+    confusion_matrices.append(conf_matrix)
 
     accuracies.append(accuracy)
     # weights_input_layer.append(model.fc1.weight.clone())
@@ -308,27 +357,31 @@ for epoch in range(num_epochs):
 
 print('all incorrect guesses in training across all epochs = \n', all_epoch_incorrect_guesses)
 
-for i in range(len(weights_input_layer)):
-    # weights_input_layer[i] = weights_input_layer[i].detach().numpy()
-    weights_output_layer[i] = weights_output_layer[i].detach().numpy()
+for i in range(len(epochs)):
     weights_counter[i] = weights_counter[i].detach().numpy()
-    # gradients_input_layer[i] = gradients_input_layer[i].detach().numpy()
-    gradients_output_layer[i] = gradients_output_layer[i].detach().numpy()
-    gradients_counter[i] = gradients_counter[i].detach().numpy()
-    # weight_11_input_layer.append(weights_input_layer[i][0][0])
-    # weight_12_input_layer.append(weights_input_layer[i][0][1])
-    # weight_21_input_layer.append(weights_input_layer[i][1][0])
-    # weight_22_input_layer.append(weights_input_layer[i][1][1])
-    # # gradient_11_input_layer.append(gradients_input_layer[i][0][0])
-    # # gradient_12_input_layer.append(gradients_input_layer[i][0][1])
-    # # gradient_21_input_layer.append(gradients_input_layer[i][1][0])
-    # # gradient_22_input_layer.append(gradients_input_layer[i][1][1])
-    # weight_1_counter.append(weights_counter[i][0][0])
-    # weight_2_counter.append(weights_counter[i][0][1])
-    # weight_3_counter.append(weights_counter[i][0][2])
-    # gradient_1_counter.append(gradients_counter[i][0][0])
-    # gradient_2_counter.append(gradients_counter[i][0][1])
-    # gradient_3_counter.append(gradients_counter[i][0][2])
+    weights_output_layer[i] = weights_output_layer[i].detach().numpy()
+    biases_counter[i] = biases_counter[i].detach().numpy()
+    biases_output_layer[i] = biases_output_layer[i].detach().numpy()
+    # # weights_input_layer[i] = weights_input_layer[i].detach().numpy()
+    # weights_output_layer[i] = weights_output_layer[i].detach().numpy()
+    # weights_counter[i] = weights_counter[i].detach().numpy()
+    # # gradients_input_layer[i] = gradients_input_layer[i].detach().numpy()
+    # gradients_output_layer[i] = gradients_output_layer[i].detach().numpy()
+    # gradients_counter[i] = gradients_counter[i].detach().numpy()
+    # # weight_11_input_layer.append(weights_input_layer[i][0][0])
+    # # weight_12_input_layer.append(weights_input_layer[i][0][1])
+    # # weight_21_input_layer.append(weights_input_layer[i][1][0])
+    # # weight_22_input_layer.append(weights_input_layer[i][1][1])
+    # # # gradient_11_input_layer.append(gradients_input_layer[i][0][0])
+    # # # gradient_12_input_layer.append(gradients_input_layer[i][0][1])
+    # # # gradient_21_input_layer.append(gradients_input_layer[i][1][0])
+    # # # gradient_22_input_layer.append(gradients_input_layer[i][1][1])
+    # # weight_1_counter.append(weights_counter[i][0][0])
+    # # weight_2_counter.append(weights_counter[i][0][1])
+    # # weight_3_counter.append(weights_counter[i][0][2])
+    # # gradient_1_counter.append(gradients_counter[i][0][0])
+    # # gradient_2_counter.append(gradients_counter[i][0][1])
+    # # gradient_3_counter.append(gradients_counter[i][0][2])
 
 
 # df1 = pandas.DataFrame()
@@ -339,8 +392,12 @@ df1['output layer weights'] = weights_output_layer
 df1['output layer biases'] = biases_output_layer
 df1['losses'] = all_losses
 df1['epoch accuracies'] = accuracies
+df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
+df1['confusion matrices'] = confusion_matrices
 
-df1.to_excel('Dyck1_Counter_10_Sigmoid_BCE.xlsx')
+df1.to_excel(excel_name)
+
+# df1.to_excel('Dyck1_Counter_10_Sigmoid_BCE.xlsx')
 
 #
 # df1['weight_11_input_layer'] = weight_11_input_layer
@@ -492,6 +549,10 @@ def test():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST')
+    with open(document_name,'a') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_test_notencoded[i]
@@ -501,13 +562,21 @@ def test():
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                f.write('Test sample = '+input_sentence+'\n')
             count = torch.tensor([0],dtype=torch.float32)
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+                with open(document_name,'a') as f:
+                    f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output, count = model(input_tensor[j][0],count)
                 print('count = ',count)
                 print('output = ',output)
+                with open(document_name,'a') as f:
+                    f.write('count = '+str(count)+'\n')
+                    f.write('output = '+str(output)+'\n')
 
             guess, guess_i = classFromOutput(output)
             class_i = labels.index(class_category)
@@ -516,6 +585,10 @@ def test():
             confusion[class_i][guess_i] += 1
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
+
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
@@ -533,6 +606,11 @@ def test():
     # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+    with open(document_name,'a') as f:
+        f.write('confusion matrix for test set \n'+str(confusion)+'\n')
+        f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
+        f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
+        f.write('accuracy = ' + str(accuracy) + '\n')
     return accuracy
 
 
@@ -558,7 +636,7 @@ print('test accuracy = ', test())
 #     return rep
 
 X_length = ['()()','(()(',')()(', '((()',')))(','((((', '((()))','(())((','(())(())','((((()))','()()()()(())',')))(((()((', '((((()))))(())(())()','((()((()()((())(())(','(((((((((((((((((((())))))))))','(())(())(())((()))((()))((()))','))(()(((()(())()((())()(())()(','(((((((())))((()(()()((()()))(()((()()(()((())(()())()(()(()','))(())()((())(())()((()))((()))(())(())(())(())((']
-y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty','not empty', 'empty', 'not empty','not empty','empty', 'not empty', 'not empty', 'empty']
+y_length = ['empty','not empty','empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty', 'not empty', 'empty','not empty', 'empty', 'not empty','not empty','empty', 'not empty', 'not empty', 'not empty']
 
 print(len(X_length))
 print(len(y_length))
@@ -601,6 +679,9 @@ def test_length():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST LENGTH')
+    with open(document_name,'a') as f:
+        f.write('////////////////////////////////////////\n')
+        f.write('TEST LENGTH\n')
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_length[i]
@@ -610,13 +691,17 @@ def test_length():
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
+
+            with open(document_name,'a') as f:
+                f.write('////////////////////////////////////////////\n')
+                f.write('Test sample = '+input_sentence+'\n')
             count = torch.tensor([0],dtype=torch.float32)
             for j in range(input_tensor.size()[0]):
-                print('input tensor[j][0] = ', input_tensor[j][0])
+                # print('input tensor[j][0] = ', input_tensor[j][0])
 
                 output, count = model(input_tensor[j][0],count)
-                print('count = ',count)
-                print('output = ',output)
+                # print('count = ',count)
+                # print('output = ',output)
 
             guess, guess_i = classFromOutput(output)
             class_i = labels.index(class_category)
@@ -625,6 +710,12 @@ def test_length():
             confusion[class_i][guess_i] += 1
             predicted_classes.append(guess_i)
             expected_classes.append(class_i)
+            print('output = ',output)
+            print('count = ',count)
+
+            with open(document_name,'a') as f:
+                f.write('predicted class = '+guess+'\n')
+                f.write('actual class = '+class_category+'\n')
 
             if guess == class_category:
                 num_correct += 1
@@ -642,6 +733,11 @@ def test_length():
     # plt.show()
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+    with open(document_name,'a') as f:
+        f.write('confusion matrix for test set \n'+str(confusion)+'\n')
+        f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
+        f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
+        f.write('accuracy = ' + str(accuracy) + '\n')
     return accuracy
 
 
