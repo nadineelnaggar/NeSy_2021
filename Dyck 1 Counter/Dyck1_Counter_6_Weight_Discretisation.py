@@ -13,8 +13,8 @@ this is an implementation of the image Dyck1_Counter_6.png
 """
 
 
-document_name = 'Dyck1_Counter_6_correct_weights_with_noise_5_Softmax_BCE_SGD_run_3.txt'
-excel_name = 'Dyck1_Counter_6_correct_weights_with_noise_5_Softmax_BCE_SGD_run_3.xlsx'
+document_name = 'Dyck1_Counter_6_weight_discretisation_correct_weights_Softmax_BCE_SGD_run_1.txt'
+excel_name = 'Dyck1_Counter_6_weight_discretisation_correct_weights_Softmax_BCE_SGD_run_1.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -28,26 +28,6 @@ input_size = 2
 output_size = 2
 hidden_1_size = 1
 hidden_2_size = 2
-
-# #noise configuration 1
-# min_noise = -0.1
-# max_noise=0.1
-
-# #noise configuration 2
-# min_noise = -0.3
-# max_noise=0.3
-
-# #noise configuration 3
-# min_noise = -0.5
-# max_noise=0.5
-
-# #noise configuration 4
-# min_noise = -0.2
-# max_noise=0.2
-
-#noise configuration 5
-min_noise = -0.4
-max_noise=0.4
 
 # import the data
 
@@ -131,40 +111,40 @@ class Net(nn.Module):
     def __init__(self, input_size,output_size, hidden_size_1, hidden_size_2):
         super(Net, self).__init__()
         self.closing_filter = nn.Linear(input_size,hidden_size_1)
-        self.closing_filter.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),0+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_filter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.closing_filter.weight = nn.Parameter(torch.tensor([1,0],dtype=torch.float32))
+        self.closing_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_filter_relu = nn.ReLU()
         self.opening_filter = nn.Linear(input_size,hidden_size_1)
-        self.opening_filter.weight = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_filter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.opening_filter.weight = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
+        self.opening_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_filter_relu = nn.ReLU()
         self.closing_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_counter_relu = nn.ReLU()
         self.opening_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_bracket_counter_relu = nn.ReLU()
         self.closing_minus_opening = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),-1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1,-1],dtype=torch.float32))
+        self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_minus_opening_relu = nn.ReLU()
         self.opening_minus_closing = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1,1],dtype=torch.float32))
+        self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_relu = nn.ReLU()
         self.closing_bracket_surplus = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_surplus_relu = nn.ReLU()
         self.opening_minus_closing_copy = nn.Linear(hidden_size_1,hidden_size_1)
-        self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1],dtype=torch.float32))
+        self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_copy_relu = nn.ReLU()
         self.out = nn.Linear(hidden_size_2,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([[1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],[-1+random.uniform(min_noise,max_noise),-1+random.uniform(min_noise,max_noise)]],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
+        self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
+        self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
         self.softmax = nn.Softmax(dim=0)
 
     def forward(self, x, opening_brackets, closing_brackets, excess_closing_brackets):
@@ -438,8 +418,60 @@ def train():
                     print('surplus closing bracket count = ',surplus_closing_bracket_count)
 
             loss = criterion(output_tensor, target_tensor)
+            for param in model.parameters():
+                if param.shape==torch.Size([]):
+                    param_floor = torch.floor(param)
+                    param_ceil = torch.ceil(param)
+                    param_floor_difference = param - param_floor
+                    param_ceil_difference = param_ceil - param
+                    param_differences = torch.cat(
+                        (param_floor_difference.unsqueeze(dim=0), param_ceil_difference.unsqueeze(dim=0)))
+                    val = torch.min(param_differences)
+                    elem.data = elem.data + val
+                    # param.add_(val)
+
+                else:
+
+                    for elem in param:
+                        # if elem.dim==0:
+                        #     elem = elem.unsqueeze(dim=0)
+                        elem_floor = torch.floor(elem)
+                        elem_ceil = torch.ceil(elem)
+                        elem_floor_difference = elem - elem_floor
+                        elem_ceil_difference = elem_ceil-elem
+                        elem_differences = torch.cat((elem_floor_difference.unsqueeze(dim=0),elem_ceil_difference.unsqueeze(dim=0)))
+                        val = torch.min(elem_differences)
+                        elem.data= elem.data + val
+                        # elem.add_(val)
+
             loss.backward()
             optimiser.step()
+            # for param in model.parameters():
+            #     if param.shape==torch.Size([]):
+            #         param_floor = torch.floor(param)
+            #         param_ceil = torch.ceil(param)
+            #         param_floor_difference = param - param_floor
+            #         param_ceil_difference = param_ceil - param
+            #         param_differences = torch.cat(
+            #             (param_floor_difference.unsqueeze(dim=0), param_ceil_difference.unsqueeze(dim=0)))
+            #         val = torch.min(param_differences)
+            #         elem = elem + val
+            #         # param.add_(val)
+            #
+            #     else:
+            #
+            #         for elem in param:
+            #             # if elem.dim==0:
+            #             #     elem = elem.unsqueeze(dim=0)
+            #             elem_floor = torch.floor(elem)
+            #             elem_ceil = torch.ceil(elem)
+            #             elem_floor_difference = elem - elem_floor
+            #             elem_ceil_difference = elem_ceil-elem
+            #             elem_differences = torch.cat((elem_floor_difference.unsqueeze(dim=0),elem_ceil_difference.unsqueeze(dim=0)))
+            #             val = torch.min(elem_differences)
+            #             elem= elem + val
+            #             # elem.add_(val)
+
 
 
 

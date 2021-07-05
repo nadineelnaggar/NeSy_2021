@@ -14,8 +14,8 @@ this is an implementation of the image Dyck1_Counter_6.png but with a clipping (
 for the output layer instead of a sigmoid/softmax activation and MSE loss function.
 """
 
-document_name = 'Dyck1_Counter_8_correct_weights_with_noise_Clipping_MSE_SGD_run_3.txt'
-excel_name = 'Dyck1_Counter_8_correct_weights_with_noise_Clipping_MSE_SGD_run_3.xlsx'
+document_name = 'Dyck1_Counter_8_correct_weights_with_noise_5_Clipping_MSE_SGD_run_3.txt'
+excel_name = 'Dyck1_Counter_8_correct_weights_with_noise_5_Clipping_MSE_SGD_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -30,8 +30,26 @@ output_size = 2
 hidden_1_size = 1
 hidden_2_size = 2
 
-min_noise = -0.1
-max_noise = 0.1
+# #noise configuration 1
+# min_noise = -0.1
+# max_noise = 0.1
+
+# #noise configuration 2
+# min_noise = -0.3
+# max_noise=0.3
+
+# #noise configuration 3
+# min_noise = -0.5
+# max_noise=0.5
+
+# #noise configuration 4
+# min_noise = -0.2
+# max_noise=0.2
+
+#noise configuration 5
+min_noise = -0.4
+max_noise=0.4
+
 
 # import the data
 

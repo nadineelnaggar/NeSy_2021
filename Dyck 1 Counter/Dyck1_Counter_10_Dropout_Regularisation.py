@@ -8,8 +8,8 @@ import seaborn as sns
 import random
 import matplotlib.pyplot as plt
 
-document_name = 'Dyck1_Counter_10_correct_weights_with_noise_5_Sigmoid_BCE_run_2.txt'
-excel_name = 'Dyck1_Counter_10_correct_weights_with_noise_5_Sigmoid_BCE_run_2.xlsx'
+document_name = 'Dyck1_Counter_10_Dropout_Regularisation_correct_weights_Sigmoid_BCE_run_2.txt'
+excel_name = 'Dyck1_Counter_10_Dropout_Regularisation_correct_weights_Sigmoid_BCE_run_2.xlsx'
 
 num_epochs = 1000
 max_length = 2
@@ -25,25 +25,6 @@ n_letters = len(vocab)
 num_classes = 2
 
 
-# #noise configuration 1
-# min_noise = -0.1
-# max_noise=0.1
-
-# #noise configuration 2
-# min_noise = -0.3
-# max_noise=0.3
-
-# #noise configuration 3
-# min_noise = -0.5
-# max_noise=0.5
-
-# #noise configuration 4
-# min_noise = -0.2
-# max_noise=0.2
-
-#noise configuration 5
-min_noise = -0.4
-max_noise=0.4
 
 
 
@@ -107,17 +88,19 @@ class Counter(nn.Module):
         # self.fc1.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.counter = nn.Linear(counter_input_size,counter_output_size)
         # self.counter.weight = nn.Parameter(torch.tensor([[1,0,1],[0,-1,1]],dtype=torch.float32))
-        self.counter.weight = nn.Parameter(torch.tensor([[1+random.uniform(min_noise,max_noise), -1+random.uniform(min_noise,max_noise), 1+random.uniform(min_noise,max_noise)]], dtype=torch.float32))
-        self.counter.bias = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise)],dtype=torch.float32))
+        self.counter.weight = nn.Parameter(torch.tensor([[1, -1, 1]], dtype=torch.float32))
+        self.counter.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
+        self.counter_dropout = nn.Dropout()
         self.fc2 = nn.Linear(counter_output_size,output_size)
-        self.fc2.weight = nn.Parameter(torch.tensor([[1+random.uniform(min_noise,max_noise)]],dtype=torch.float32))
-        self.fc2.bias = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise)],dtype=torch.float32))
+        self.fc2.weight = nn.Parameter(torch.tensor([[1]],dtype=torch.float32))
+        self.fc2.bias = nn.Parameter(torch.tensor([0],dtype=torch.float32))
         self.out = nn.Sigmoid()
 
     def forward(self,x,previous_count):
         # x = self.fc1(x)
         combined = torch.cat((x,previous_count))
         x = self.counter(combined)
+        x = self.counter_dropout(x)
         previous_count=x
         x = self.fc2(x)
         x = self.out(x)

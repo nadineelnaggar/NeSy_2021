@@ -8,8 +8,8 @@ import seaborn as sns
 import random
 import matplotlib.pyplot as plt
 
-document_name = 'Dyck1_Counter_11_correct_weights_with_noise_Clipping_MSE_run_3.txt'
-excel_name = 'Dyck1_Counter_11_correct_weights_with_noise_Clipping_MSE_run_3.xlsx'
+document_name = 'Dyck1_Counter_11_correct_weights_with_noise_5_Clipping_MSE_run_2.txt'
+excel_name = 'Dyck1_Counter_11_correct_weights_with_noise_5_Clipping_MSE_run_2.xlsx'
 
 num_epochs = 1000
 max_length = 2
@@ -24,9 +24,25 @@ labels = ['empty','not empty']
 n_letters = len(vocab)
 num_classes = 2
 
-min_noise = -0.1
-max_noise=0.1
+# #noise configuration 1
+# min_noise = -0.1
+# max_noise=0.1
 
+# #noise configuration 2
+# min_noise = -0.3
+# max_noise=0.3
+
+# #noise configuration 3
+# min_noise = -0.5
+# max_noise=0.5
+
+# #noise configuration 4
+# min_noise = -0.2
+# max_noise=0.2
+
+#noise configuration 5
+min_noise = -0.4
+max_noise=0.4
 
 
 def classFromOutput(output):

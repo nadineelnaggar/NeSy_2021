@@ -8,13 +8,16 @@ import random
 import seaborn as sns
 import pandas
 
+
 """
-this is an implementation of the image Dyck1_Counter_6.png
+NO INITIALISED WEIGHTS
+FIX DIMENSIONALITY ERRORS
+this is an implementation of the image Dyck1_Counter_6.png but with a clipping (regression activation)
+for the output layer instead of a sigmoid/softmax activation.
 """
 
-
-document_name = 'Dyck1_Counter_6_correct_weights_with_noise_5_Softmax_BCE_SGD_run_3.txt'
-excel_name = 'Dyck1_Counter_6_correct_weights_with_noise_5_Softmax_BCE_SGD_run_3.xlsx'
+document_name = 'Dyck1_Counter_8_L1_Regularisation_Random_Weights_Clipping_MSE_run_2.txt'
+excel_name = 'Dyck1_Counter_8_L1_Regularisation_Random_Weights_Clipping_MSE_run_2.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -28,26 +31,6 @@ input_size = 2
 output_size = 2
 hidden_1_size = 1
 hidden_2_size = 2
-
-# #noise configuration 1
-# min_noise = -0.1
-# max_noise=0.1
-
-# #noise configuration 2
-# min_noise = -0.3
-# max_noise=0.3
-
-# #noise configuration 3
-# min_noise = -0.5
-# max_noise=0.5
-
-# #noise configuration 4
-# min_noise = -0.2
-# max_noise=0.2
-
-#noise configuration 5
-min_noise = -0.4
-max_noise=0.4
 
 # import the data
 
@@ -131,47 +114,48 @@ class Net(nn.Module):
     def __init__(self, input_size,output_size, hidden_size_1, hidden_size_2):
         super(Net, self).__init__()
         self.closing_filter = nn.Linear(input_size,hidden_size_1)
-        self.closing_filter.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),0+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_filter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.closing_filter.weight = nn.Parameter(torch.tensor([1,0],dtype=torch.float32))
+        # self.closing_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_filter_relu = nn.ReLU()
         self.opening_filter = nn.Linear(input_size,hidden_size_1)
-        self.opening_filter.weight = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_filter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.opening_filter.weight = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
+        # self.opening_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_filter_relu = nn.ReLU()
         self.closing_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_counter_relu = nn.ReLU()
         self.opening_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_bracket_counter_relu = nn.ReLU()
         self.closing_minus_opening = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),-1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1,-1],dtype=torch.float32))
+        # self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_minus_opening_relu = nn.ReLU()
         self.opening_minus_closing = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1,1],dtype=torch.float32))
+        # self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_relu = nn.ReLU()
         self.closing_bracket_surplus = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_surplus_relu = nn.ReLU()
         self.opening_minus_closing_copy = nn.Linear(hidden_size_1,hidden_size_1)
-        self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
-        self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0+random.uniform(min_noise,max_noise),dtype=torch.float32))
+        # self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1],dtype=torch.float32))
+        # self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_copy_relu = nn.ReLU()
         self.out = nn.Linear(hidden_size_2,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([[1+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],[-1+random.uniform(min_noise,max_noise),-1+random.uniform(min_noise,max_noise)]],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor([0+random.uniform(min_noise,max_noise),1+random.uniform(min_noise,max_noise)],dtype=torch.float32))
+        # self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
+        # self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
         self.softmax = nn.Softmax(dim=0)
 
     def forward(self, x, opening_brackets, closing_brackets, excess_closing_brackets):
         closing = self.closing_filter(x)
         closing = self.closing_filter_relu(closing)
 
-        closing = torch.cat((closing.unsqueeze(dim=0),closing_brackets.unsqueeze(dim=0)))
+        # closing = torch.cat((closing.unsqueeze(dim=0),closing_brackets.unsqueeze(dim=0)))
+        closing = torch.cat((closing, closing_brackets))
         closing = self.closing_bracket_counter(closing)
         closing = self.closing_bracket_counter_relu(closing)
         closing_brackets = closing
@@ -179,13 +163,15 @@ class Net(nn.Module):
         opening = self.opening_filter(x)
         opening = self.opening_filter_relu(opening)
 
-        opening = torch.cat((opening.unsqueeze(dim=0),opening_brackets.unsqueeze(dim=0)))
+        # opening = torch.cat((opening.unsqueeze(dim=0),opening_brackets.unsqueeze(dim=0)))
+        opening = torch.cat((opening, opening_brackets))
         opening = self.opening_bracket_counter(opening)
         opening = self.opening_bracket_counter_relu(opening)
         opening_brackets=opening
 
-        closing_minus_opening = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
-        opening_minus_closing = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
+
+        closing_minus_opening = torch.cat((closing,opening))
+        opening_minus_closing = torch.cat((closing,opening))
         closing_minus_opening = self.closing_minus_opening(closing_minus_opening)
         closing_minus_opening = self.closing_minus_opening_relu(closing_minus_opening)
         opening_minus_closing = self.opening_minus_closing(opening_minus_closing)
@@ -193,16 +179,18 @@ class Net(nn.Module):
 
         opening_minus_closing = self.opening_minus_closing_copy(opening_minus_closing.unsqueeze(dim=0))
         opening_minus_closing = self.opening_minus_closing_copy_relu(opening_minus_closing)
-        surplus_closing_brackets = torch.cat((closing_minus_opening.unsqueeze(dim=0),excess_closing_brackets.unsqueeze(dim=0)))
+        surplus_closing_brackets = torch.cat((closing_minus_opening,excess_closing_brackets))
         surplus_closing_brackets = self.closing_bracket_surplus(surplus_closing_brackets)
         surplus_closing_brackets = self.closing_bracket_surplus_relu(surplus_closing_brackets)
 
-        output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
+        output = torch.cat((surplus_closing_brackets,opening_minus_closing[0]))
         output = self.out(output)
-        output = self.softmax(output)
+        # output = self.softmax(output)
+        output = torch.clamp(output,min=0,max=1)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
 
 model = Net(input_size,output_size,hidden_1_size,hidden_2_size)
+
 
 def test_whole_dataset():
     model.eval()
@@ -227,9 +215,9 @@ def test_whole_dataset():
             input_sentence = X_notencoded[i]
             input_tensor = X_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -241,6 +229,7 @@ def test_whole_dataset():
 
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+
                 with open(document_name,'a') as f:
                     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
@@ -307,7 +296,7 @@ all_epoch_incorrect_guesses = []
 # initial_biases = []
 # final_biases = []
 epochs = []
-confusion_matrices = []
+confusion_matrices=[]
 # initial_weights_counter = []
 # initial_weights_hidden1 = []
 # initial_weights_hidden2 = []
@@ -334,7 +323,6 @@ confusion_matrices = []
 # final_gradients_hidden2 = []
 # final_gradients_output = []
 
-
 weight_opening_bracket_filter = []
 bias_opening_bracket_filter = []
 weight_closing_bracket_filter = []
@@ -355,9 +343,9 @@ weight_output_layer = []
 bias_output_layer = []
 
 learning_rate = 0.005
-# criterion = nn.MSELoss()
+criterion = nn.MSELoss()
 # criterion=nn.CrossEntropyLoss()
-criterion = nn.BCELoss()
+# criterion = nn.BCELoss()
 # criterion=nn.BCEWithLogitsLoss()
 optimiser = optim.SGD(model.parameters(), lr=learning_rate)
 # optimiser=optim.Adam(model.parameters(),lr=learning_rate)
@@ -425,9 +413,9 @@ def train():
                 print('input_tensor = ',input_tensor)
             #initialise the values for the recurrent connections
 
-            opening_bracket_count = torch.tensor(0,dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0,dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0,dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0],dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0],dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0],dtype=torch.float32)
 
             for j in range(input_tensor.size()[0]):
 
@@ -438,8 +426,14 @@ def train():
                     print('surplus closing bracket count = ',surplus_closing_bracket_count)
 
             loss = criterion(output_tensor, target_tensor)
+            l1_regularisation = torch.tensor([0], dtype=torch.float32)
+            for param in model.parameters():
+                l1_regularisation += torch.norm(param, 1)
+            loss = loss + l1_regularisation
             loss.backward()
             optimiser.step()
+
+
 
 
 
@@ -469,6 +463,7 @@ def train():
 
         all_losses.append(current_loss/len(X_train))
         all_epoch_incorrect_guesses.append(epoch_incorrect_guesses)
+
         conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
         confusion_matrices.append(conf_matrix)
 
@@ -499,9 +494,6 @@ def train():
         #     print('initial output bias = ',model.l3n1.bias)
             print('loss = ',loss.item())
 
-
-        # print('loss = ', loss.item())
-
         weight_opening_bracket_filter.append(model.opening_filter.weight.clone())
         bias_opening_bracket_filter.append(model.opening_filter.bias.clone())
         weight_closing_bracket_filter.append(model.closing_filter.weight.clone())
@@ -521,6 +513,8 @@ def train():
         weight_output_layer.append(model.out.weight.clone())
         bias_output_layer.append(model.out.bias.clone())
 
+        # print('loss = ', loss.item())
+
         if epoch==(num_epochs-1):
             print('Final training accuracy = ', num_correct / len(X_train) * 100, '%')
             conf_matrix = sklearn.metrics.confusion_matrix(expected_classes, predicted_classes)
@@ -532,6 +526,8 @@ def train():
             print(all_epoch_incorrect_guesses)
     # plt.plot(epochs,all_losses)
     # plt.show()
+
+
     df1 = pandas.DataFrame()
     for i in range(len(epochs)):
         weight_opening_bracket_filter[i] = weight_opening_bracket_filter[i].detach().numpy()
@@ -554,19 +550,19 @@ def train():
         bias_output_layer[i] = bias_output_layer[i].detach().numpy()
 
     df1['epochs'] = epochs
-    df1['weight_opening_bracket_filter'] = weight_opening_bracket_filter
-    df1['bias_opening_bracket_filter'] = bias_opening_bracket_filter
-    df1['weight_closing_bracket_filter'] = weight_closing_bracket_filter
+    df1['weight_opening_bracket_filter']=weight_opening_bracket_filter
+    df1['bias_opening_bracket_filter']=bias_opening_bracket_filter
+    df1['weight_closing_bracket_filter']=weight_closing_bracket_filter
     df1['bias_closing_bracket_filter'] = bias_closing_bracket_filter
-    df1['weight_opening_bracket_counter'] = weight_opening_bracket_counter
+    df1['weight_opening_bracket_counter']=weight_opening_bracket_counter
     df1['bias_opening_bracket_counter'] = bias_opening_bracket_counter
-    df1['weight_closing_bracket_counter'] = weight_closing_bracket_counter
-    df1['bias_closing_bracket_counter'] = bias_closing_bracket_counter
+    df1['weight_closing_bracket_counter']=weight_closing_bracket_counter
+    df1['bias_closing_bracket_counter']=bias_closing_bracket_counter
     df1['weight_opening_minus_closing'] = weight_opening_minus_closing
     df1['bias_opening_minus_closing'] = bias_opening_minus_closing
     df1['weight_opening_minus_closing_copy'] = weight_opening_minus_closing_copy
     df1['bias_opening_minus_closing_copy'] = bias_opening_minus_closing_copy
-    df1['weight_closing_minus_opening'] = weight_closing_minus_opening
+    df1['weight_closing_minus_opening']=weight_closing_minus_opening
     df1['bias_closing_minus_opening'] = bias_closing_minus_opening
     df1['weight_surplus_closing_bracket_count'] = weight_surplus_closing_bracket_count
     df1['bias_surplus_closing_bracket_count'] = bias_surplus_closing_bracket_count
@@ -574,11 +570,13 @@ def train():
     df1['bias_output_layer'] = bias_output_layer
     df1['all losses'] = all_losses
     df1['epoch accuracies'] = epoch_accuracies
-    df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
-    df1['confusion matrices']=confusion_matrices
+    df1['epoch incorrect guesses']=all_epoch_incorrect_guesses
+    df1['confusion matrices'] = confusion_matrices
 
-    # df1.to_excel('Dyck1_Counter_6_Softmax_BCE.xlsx')
+    # df1.to_excel('Dyck1_Counter_8_No_Initialisation_Clipping_MSE.xlsx')
     df1.to_excel(excel_name)
+
+
 train()
 
 
@@ -593,9 +591,11 @@ def test():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST SET')
+
     with open(document_name, 'a') as f:
         f.write('////////////////////////////////////////\n')
         f.write('TEST SET\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_test_notencoded[i]
@@ -603,9 +603,9 @@ def test():
             input_sentence = X_test_notencoded[i]
             input_tensor = X_test[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -616,6 +616,7 @@ def test():
 
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+
                 with open(document_name, 'a') as f:
                     f.write('input tensor[j][0] = '+ str(input_tensor[j][0])+'\n')
 
@@ -659,19 +660,19 @@ def test():
     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
     # plt.show()
-
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
+
     with open(document_name,'a') as f:
         f.write('accuracy = '+str(accuracy)+'\n')
         f.write('confusion matrix for test set = \n'+str(confusion)+'\n')
         f.write('correct guesses in testing = '+str(correct_guesses)+'\n')
         f.write('incorrect guesses in testing = '+str(incorrect_guesses)+'\n')
+
     return accuracy
 
 
 print('test accuracy = ', test())
-
 
 data_length = []
 X_length = []
@@ -736,6 +737,7 @@ def test_length():
     with open(document_name,'a') as f:
         f.write('////////////////////////////////////////\n')
         f.write('TEST LENGTH SET\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_length[i]
@@ -743,18 +745,20 @@ def test_length():
             input_sentence = X_length[i]
             input_tensor = X_length_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
+
             # with open(document_name,'a') as f:
             #     f.write('////////////////////////////////////////////\n')
             #     f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
+
                 # with open(document_name, 'a') as f:
                 #     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
