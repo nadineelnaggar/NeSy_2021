@@ -1,34 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Dropout_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Dropout_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_L1_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_L1_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_L2_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_L2_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_Dropout_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_Dropout_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L1_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L1_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L2_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L2_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Dropout_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_L1_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_L2_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Dropout_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Dropout_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_L1_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_L1_Regularisation_Random_Weights.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_L2_Regularisation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_L2_Regularisation_Random_Weights.py" afterDir="false" />
+    <list default="true" id="9db7a450-d628-4b05-9275-62f378bbe661" name="Default Changelist" comment="Completing codes for NeSy. Still need to finish the weight discretiser">
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Weight_Discretisation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Weight_Discretisation_Random_Weights.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_Weight_Discretisation_Random_Weights.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation_Random_Weights.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Weight_Discretisation_Random_Weights.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_noise.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_noise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_noise.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_noise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_noise.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_noise.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_noise.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_noise.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -79,8 +59,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Dyck1_Counter_6_Weight_Discretisation">
-    <configuration name="Dyck1_Counter_11_Dropout_Regularisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.Dyck1_Counter_11_Weight_Discretisation_Random_Weights">
+    <configuration name="Dyck1_Counter_10_Weight_Discretisation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -93,7 +73,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_Dropout_Regularisation_Random_Weights.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Weight_Discretisation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -102,7 +82,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Dyck1_Counter_11_L1_Regularisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Dyck1_Counter_10_Weight_Discretisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -115,7 +95,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L1_Regularisation_Random_Weights.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_10_Weight_Discretisation_Random_Weights.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -124,7 +104,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Dyck1_Counter_11_L2_Regularisation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Dyck1_Counter_11_Weight_Discretisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -137,7 +117,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L2_Regularisation.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_Weight_Discretisation_Random_Weights.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -146,7 +126,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Dyck1_Counter_11_L2_Regularisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Dyck1_Counter_6_Weight_Discretisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -159,7 +139,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_11_L2_Regularisation_Random_Weights.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation_Random_Weights.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -168,7 +148,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Dyck1_Counter_6_Weight_Discretisation" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Dyck1_Counter_8_Weight_Discretisation_Random_Weights" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="NeSy_2021" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -181,7 +161,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_6_Weight_Discretisation.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Dyck 1 Counter/Dyck1_Counter_8_Weight_Discretisation_Random_Weights.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -192,11 +172,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.Dyck1_Counter_6_Weight_Discretisation" />
-        <item itemvalue="Python.Dyck1_Counter_11_L2_Regularisation_Random_Weights" />
-        <item itemvalue="Python.Dyck1_Counter_11_L1_Regularisation_Random_Weights" />
-        <item itemvalue="Python.Dyck1_Counter_11_Dropout_Regularisation_Random_Weights" />
-        <item itemvalue="Python.Dyck1_Counter_11_L2_Regularisation" />
+        <item itemvalue="Python.Dyck1_Counter_11_Weight_Discretisation_Random_Weights" />
+        <item itemvalue="Python.Dyck1_Counter_10_Weight_Discretisation_Random_Weights" />
+        <item itemvalue="Python.Dyck1_Counter_10_Weight_Discretisation" />
+        <item itemvalue="Python.Dyck1_Counter_6_Weight_Discretisation_Random_Weights" />
+        <item itemvalue="Python.Dyck1_Counter_8_Weight_Discretisation_Random_Weights" />
       </list>
     </recent_temporary>
   </component>
@@ -210,7 +190,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1624557571350</updated>
-      <workItem from="1624557572974" duration="195971000" />
+      <workItem from="1624557572974" duration="206752000" />
     </task>
     <task id="LOCAL-00001" summary="Created folder for the counter code">
       <created>1624654323110</created>
@@ -513,7 +493,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625414400396</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="Completing codes for NeSy. Still need to finish the weight discretiser">
+      <created>1625461782104</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1625461782105</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -532,7 +519,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="Update the Test_Sigmoid code" />
     <MESSAGE value="Creating the Dyck 1 Counter folder and Dyck1_Counter code" />
     <MESSAGE value="Updated Dyck1_Counter code. Tested whole dataset then trained." />
     <MESSAGE value="Testing the trained model on the test set" />
@@ -557,7 +543,8 @@
     <MESSAGE value="fix the code for early stopping" />
     <MESSAGE value="Adding noise to correctly initialised weights and biases. Noise is a random number from a uniform distribution between -0.1 and +0.1" />
     <MESSAGE value="Adding regularisation to sigmoid and softmax models with correctly initialised weights" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding regularisation to sigmoid and softmax models with correctly initialised weights" />
+    <MESSAGE value="Completing codes for NeSy. Still need to finish the weight discretiser" />
+    <option name="LAST_COMMIT_MESSAGE" value="Completing codes for NeSy. Still need to finish the weight discretiser" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -585,6 +572,7 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_Dropout_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_11_Dropout_Regularisation_Random_Weights Coverage Results" MODIFIED="1625460474297" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7_Dropout_Regularisation.coverage" NAME="Dyck1_Counter_7_Dropout_Regularisation Coverage Results" MODIFIED="1625411353617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_L1_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_11_L1_Regularisation_Random_Weights Coverage Results" MODIFIED="1625460806302" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_Weight_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_8_Weight_Regularisation_Random_Weights Coverage Results" MODIFIED="1625510545629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_no_initialisation.coverage" NAME="Dyck1_Counter_6_no_initialisation Coverage Results" MODIFIED="1625237453342" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7_L2_Regularisation.coverage" NAME="Dyck1_Counter_7_L2_Regularisation Coverage Results" MODIFIED="1625413774516" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_L1_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_10_L1_Regularisation_Random_Weights Coverage Results" MODIFIED="1625458997979" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
@@ -609,6 +597,7 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_L1_Regularisation.coverage" NAME="Dyck1_Counter_11_L1_Regularisation Coverage Results" MODIFIED="1625460043712" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_L2_Regularisation.coverage" NAME="Dyck1_Counter_10_L2_Regularisation Coverage Results" MODIFIED="1625458344917" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_Dropout_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_8_Dropout_Regularisation_Random_Weights Coverage Results" MODIFIED="1625453560477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_Weight_Discretisation_Random_Weights.coverage" NAME="Dyck1_Counter_10_Weight_Discretisation_Random_Weights Coverage Results" MODIFIED="1625515279083" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_L2_Regularisation.coverage" NAME="Dyck1_Counter_8_L2_Regularisation Coverage Results" MODIFIED="1625452213580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_2.coverage" NAME="Dyck1_Counter_2 Coverage Results" MODIFIED="1625062170843" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7_noise.coverage" NAME="Dyck1_Counter_7_noise Coverage Results" MODIFIED="1625333202001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
@@ -616,9 +605,10 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_L2_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_10_L2_Regularisation_Random_Weights Coverage Results" MODIFIED="1625459258248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_L2_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_11_L2_Regularisation_Random_Weights Coverage Results" MODIFIED="1625460976642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_L1_Regularisation.coverage" NAME="Dyck1_Counter_8_L1_Regularisation Coverage Results" MODIFIED="1625451192314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
-    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_Weight_Discretisation.coverage" NAME="Dyck1_Counter_6_Weight_Discretisation Coverage Results" MODIFIED="1625461543639" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_Weight_Discretisation.coverage" NAME="Dyck1_Counter_6_Weight_Discretisation Coverage Results" MODIFIED="1625508657482" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_noise.coverage" NAME="Dyck1_Counter_11_noise Coverage Results" MODIFIED="1625454905827" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_no_initialisation.coverage" NAME="Dyck1_Counter_11_no_initialisation Coverage Results" MODIFIED="1625362535204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_11_Weight_Discretisation_Random_Weights.coverage" NAME="Dyck1_Counter_11_Weight_Discretisation_Random_Weights Coverage Results" MODIFIED="1625515615667" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_early_stopping.coverage" NAME="Dyck1_Counter_6_early_stopping Coverage Results" MODIFIED="1625328658048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_Dropout_Regularisation.coverage" NAME="Dyck1_Counter_8_Dropout_Regularisation Coverage Results" MODIFIED="1625452364698" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_9_noise.coverage" NAME="Dyck1_Counter_9_noise Coverage Results" MODIFIED="1625336786686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
@@ -626,6 +616,7 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6.coverage" NAME="Dyck1_Counter_6 Coverage Results" MODIFIED="1625323490163" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_7_L1_Regularisation.coverage" NAME="Dyck1_Counter_7_L1_Regularisation Coverage Results" MODIFIED="1625412302905" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_Dropout_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_6_Dropout_Regularisation_Random_Weights Coverage Results" MODIFIED="1625442823574" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_Weight_Discretisation_Random_Weights.coverage" NAME="Dyck1_Counter_6_Weight_Discretisation_Random_Weights Coverage Results" MODIFIED="1625512703147" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_L1_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_6_L1_Regularisation_Random_Weights Coverage Results" MODIFIED="1625415463561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_L1_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_8_L1_Regularisation_Random_Weights Coverage Results" MODIFIED="1625456366540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_9.coverage" NAME="Dyck1_Counter_9 Coverage Results" MODIFIED="1625323501056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
@@ -634,10 +625,12 @@
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_L1_Regularisation.coverage" NAME="Dyck1_Counter_10_L1_Regularisation Coverage Results" MODIFIED="1625458094284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_4.coverage" NAME="Dyck1_Counter_4 Coverage Results" MODIFIED="1625010512585" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_early_stopping.coverage" NAME="Dyck1_Counter_10_early_stopping Coverage Results" MODIFIED="1625361208720" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_Weight_Discretisation_Random_Weights.coverage" NAME="Dyck1_Counter_8_Weight_Discretisation_Random_Weights Coverage Results" MODIFIED="1625511795786" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_6_L2_Regularisation_Random_Weights.coverage" NAME="Dyck1_Counter_6_L2_Regularisation_Random_Weights Coverage Results" MODIFIED="1625416594093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_8_no_initialisation.coverage" NAME="Dyck1_Counter_8_no_initialisation Coverage Results" MODIFIED="1625237461750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_9_early_stopping.coverage" NAME="Dyck1_Counter_9_early_stopping Coverage Results" MODIFIED="1625328670959" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Sigmoid_Test.coverage" NAME="Sigmoid_Test Coverage Results" MODIFIED="1624668448871" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Sigmoid Test" />
+    <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_Weight_Discretisation.coverage" NAME="Dyck1_Counter_10_Weight_Discretisation Coverage Results" MODIFIED="1625514840021" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Counter.coverage" NAME="Counter Coverage Results" MODIFIED="1625062565107" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_10_no_initialisation.coverage" NAME="Dyck1_Counter_10_no_initialisation Coverage Results" MODIFIED="1625362239090" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />
     <SUITE FILE_PATH="coverage/NeSy_2021$Dyck1_Counter_5.coverage" NAME="Dyck1_Counter_5 Coverage Results" MODIFIED="1624908636728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Dyck 1 Counter" />

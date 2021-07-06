@@ -10,11 +10,13 @@ import pandas
 
 """
 this is an implementation of the image Dyck1_Counter_6.png
+
+IGNORE, THIS IS NOT CORRECT
 """
 
 
-document_name = 'Dyck1_Counter_6_weight_discretisation_correct_weights_Softmax_BCE_SGD_run_4.txt'
-excel_name = 'Dyck1_Counter_6_weight_discretisation_correct_weights_Softmax_BCE_SGD_run_4.xlsx'
+document_name = 'Dyck1_Counter_6_Weight Discretisation_Random_initialisation_Softmax_BCE_run_3.txt'
+excel_name = 'Dyck1_Counter_6_Weight Discretisation_Random_initialisation_Softmax_BCE_run_3.xlsx'
 
 max_length=4
 num_epochs = 1000
@@ -111,47 +113,47 @@ class Net(nn.Module):
     def __init__(self, input_size,output_size, hidden_size_1, hidden_size_2):
         super(Net, self).__init__()
         self.closing_filter = nn.Linear(input_size,hidden_size_1)
-        self.closing_filter.weight = nn.Parameter(torch.tensor([1,0],dtype=torch.float32))
-        self.closing_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.closing_filter.weight = nn.Parameter(torch.tensor([1,0],dtype=torch.float32))
+        # self.closing_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_filter_relu = nn.ReLU()
         self.opening_filter = nn.Linear(input_size,hidden_size_1)
-        self.opening_filter.weight = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
-        self.opening_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.opening_filter.weight = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
+        # self.opening_filter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_filter_relu = nn.ReLU()
         self.closing_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
-        self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.closing_bracket_counter.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.closing_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_counter_relu = nn.ReLU()
         self.opening_bracket_counter = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
-        self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.opening_bracket_counter.weight=nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.opening_bracket_counter.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_bracket_counter_relu = nn.ReLU()
         self.closing_minus_opening = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1,-1],dtype=torch.float32))
-        self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.closing_minus_opening.weight = nn.Parameter(torch.tensor([1,-1],dtype=torch.float32))
+        # self.closing_minus_opening.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_minus_opening_relu = nn.ReLU()
         self.opening_minus_closing = nn.Linear(hidden_size_2,hidden_size_1)
-        self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1,1],dtype=torch.float32))
-        self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.opening_minus_closing.weight = nn.Parameter(torch.tensor([-1,1],dtype=torch.float32))
+        # self.opening_minus_closing.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_relu = nn.ReLU()
         self.closing_bracket_surplus = nn.Linear(hidden_size_2,hidden_size_1)
-        self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
-        self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.closing_bracket_surplus.weight = nn.Parameter(torch.tensor([1,1],dtype=torch.float32))
+        # self.closing_bracket_surplus.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.closing_bracket_surplus_relu = nn.ReLU()
         self.opening_minus_closing_copy = nn.Linear(hidden_size_1,hidden_size_1)
-        self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1],dtype=torch.float32))
-        self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
+        # self.opening_minus_closing_copy.weight = nn.Parameter(torch.tensor([1],dtype=torch.float32))
+        # self.opening_minus_closing_copy.bias = nn.Parameter(torch.tensor(0,dtype=torch.float32))
         self.opening_minus_closing_copy_relu = nn.ReLU()
         self.out = nn.Linear(hidden_size_2,output_size)
-        self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
-        self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
+        # self.out.weight = nn.Parameter(torch.tensor([[1,1],[-1,-1]],dtype=torch.float32))
+        # self.out.bias = nn.Parameter(torch.tensor([0,1],dtype=torch.float32))
         self.softmax = nn.Softmax(dim=0)
 
     def forward(self, x, opening_brackets, closing_brackets, excess_closing_brackets):
         closing = self.closing_filter(x)
         closing = self.closing_filter_relu(closing)
 
-        closing = torch.cat((closing.unsqueeze(dim=0),closing_brackets.unsqueeze(dim=0)))
+        closing = torch.cat((closing,closing_brackets))
         closing = self.closing_bracket_counter(closing)
         closing = self.closing_bracket_counter_relu(closing)
         closing_brackets = closing
@@ -159,25 +161,25 @@ class Net(nn.Module):
         opening = self.opening_filter(x)
         opening = self.opening_filter_relu(opening)
 
-        opening = torch.cat((opening.unsqueeze(dim=0),opening_brackets.unsqueeze(dim=0)))
+        opening = torch.cat((opening,opening_brackets))
         opening = self.opening_bracket_counter(opening)
         opening = self.opening_bracket_counter_relu(opening)
         opening_brackets=opening
 
-        closing_minus_opening = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
-        opening_minus_closing = torch.cat((closing.unsqueeze(dim=0),opening.unsqueeze(dim=0)))
+        closing_minus_opening = torch.cat((closing,opening))
+        opening_minus_closing = torch.cat((closing,opening))
         closing_minus_opening = self.closing_minus_opening(closing_minus_opening)
         closing_minus_opening = self.closing_minus_opening_relu(closing_minus_opening)
         opening_minus_closing = self.opening_minus_closing(opening_minus_closing)
         opening_minus_closing = self.opening_minus_closing_relu(opening_minus_closing)
 
-        opening_minus_closing = self.opening_minus_closing_copy(opening_minus_closing.unsqueeze(dim=0))
+        opening_minus_closing = self.opening_minus_closing_copy(opening_minus_closing)
         opening_minus_closing = self.opening_minus_closing_copy_relu(opening_minus_closing)
-        surplus_closing_brackets = torch.cat((closing_minus_opening.unsqueeze(dim=0),excess_closing_brackets.unsqueeze(dim=0)))
+        surplus_closing_brackets = torch.cat((closing_minus_opening,excess_closing_brackets))
         surplus_closing_brackets = self.closing_bracket_surplus(surplus_closing_brackets)
         surplus_closing_brackets = self.closing_bracket_surplus_relu(surplus_closing_brackets)
 
-        output = torch.cat((surplus_closing_brackets.unsqueeze(dim=0),opening_minus_closing.unsqueeze(dim=0)))
+        output = torch.cat((surplus_closing_brackets,opening_minus_closing))
         output = self.out(output)
         output = self.softmax(output)
         return output, opening_brackets, closing_brackets, surplus_closing_brackets
@@ -207,9 +209,9 @@ def test_whole_dataset():
             input_sentence = X_notencoded[i]
             input_tensor = X_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -221,6 +223,7 @@ def test_whole_dataset():
 
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+
                 with open(document_name,'a') as f:
                     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
@@ -407,9 +410,9 @@ def train():
                 print('input_tensor = ',input_tensor)
             #initialise the values for the recurrent connections
 
-            opening_bracket_count = torch.tensor(0,dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0,dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0,dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0],dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0],dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0],dtype=torch.float32)
 
             for j in range(input_tensor.size()[0]):
 
@@ -420,12 +423,12 @@ def train():
                     print('surplus closing bracket count = ',surplus_closing_bracket_count)
 
             loss = criterion(output_tensor, target_tensor)
-            current_loss_no_discretisation+=loss.item()
+            current_loss_no_discretisation += loss.item()
             # if i == len(X_train)-1:
             #     losses_without_discretisation.append(loss)
-            weight_sum = torch.tensor(0,dtype=torch.float32)
+            weight_sum = torch.tensor(0, dtype=torch.float32)
             for param in model.parameters():
-                if param.shape==torch.Size([]):
+                if param.shape == torch.Size([]):
                     param_floor = torch.floor(param)
                     param_ceil = torch.ceil(param)
                     param_floor_difference = param - param_floor
@@ -434,7 +437,7 @@ def train():
                         (param_floor_difference.unsqueeze(dim=0), param_ceil_difference.unsqueeze(dim=0)))
                     val = torch.min(param_differences)
                     # elem.data = elem.data + val
-                    weight_sum+=val
+                    weight_sum += val
                     # param.add_(val)
 
                 else:
@@ -445,43 +448,17 @@ def train():
                         elem_floor = torch.floor(elem)
                         elem_ceil = torch.ceil(elem)
                         elem_floor_difference = elem - elem_floor
-                        elem_ceil_difference = elem_ceil-elem
-                        elem_differences = torch.cat((elem_floor_difference.unsqueeze(dim=0),elem_ceil_difference.unsqueeze(dim=0)))
+                        elem_ceil_difference = elem_ceil - elem
+                        elem_differences = torch.cat(
+                            (elem_floor_difference.unsqueeze(dim=0), elem_ceil_difference.unsqueeze(dim=0)))
                         val = torch.min(elem_differences)
                         # elem.data= elem.data + val
-                        weight_sum+=val
+                        weight_sum += val
                         # elem.add_(val)
 
-            loss+=weight_sum
-
+            loss += weight_sum
             loss.backward()
             optimiser.step()
-            # for param in model.parameters():
-            #     if param.shape==torch.Size([]):
-            #         param_floor = torch.floor(param)
-            #         param_ceil = torch.ceil(param)
-            #         param_floor_difference = param - param_floor
-            #         param_ceil_difference = param_ceil - param
-            #         param_differences = torch.cat(
-            #             (param_floor_difference.unsqueeze(dim=0), param_ceil_difference.unsqueeze(dim=0)))
-            #         val = torch.min(param_differences)
-            #         elem = elem + val
-            #         # param.add_(val)
-            #
-            #     else:
-            #
-            #         for elem in param:
-            #             # if elem.dim==0:
-            #             #     elem = elem.unsqueeze(dim=0)
-            #             elem_floor = torch.floor(elem)
-            #             elem_ceil = torch.ceil(elem)
-            #             elem_floor_difference = elem - elem_floor
-            #             elem_ceil_difference = elem_ceil-elem
-            #             elem_differences = torch.cat((elem_floor_difference.unsqueeze(dim=0),elem_ceil_difference.unsqueeze(dim=0)))
-            #             val = torch.min(elem_differences)
-            #             elem= elem + val
-            #             # elem.add_(val)
-
 
 
 
@@ -621,8 +598,10 @@ def train():
     df1['epoch incorrect guesses'] = all_epoch_incorrect_guesses
     df1['confusion matrices']=confusion_matrices
 
-    # df1.to_excel('Dyck1_Counter_6_Softmax_BCE.xlsx')
+    # df1.to_excel('Dyck1_Counter_6_no_initialisation_Softmax_BCE.xlsx')
     df1.to_excel(excel_name)
+
+
 train()
 
 
@@ -637,9 +616,11 @@ def test():
     incorrect_guesses = []
     print('////////////////////////////////////////')
     print('TEST SET')
+
     with open(document_name, 'a') as f:
         f.write('////////////////////////////////////////\n')
         f.write('TEST SET\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_test_notencoded[i]
@@ -647,9 +628,9 @@ def test():
             input_sentence = X_test_notencoded[i]
             input_tensor = X_test[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             print('////////////////////////////////////////////')
             print('Test sample = ', input_sentence)
@@ -658,8 +639,10 @@ def test():
                 f.write('////////////////////////////////////////////\n')
                 f.write('Test sample '+input_sentence+'\n')
 
+
             for j in range(input_tensor.size()[0]):
                 print('input tensor[j][0] = ', input_tensor[j][0])
+
                 with open(document_name, 'a') as f:
                     f.write('input tensor[j][0] = '+ str(input_tensor[j][0])+'\n')
 
@@ -703,7 +686,6 @@ def test():
     heat.set_ylim(bottom1 + 0.5, top1 - 0.5)
     # plt.savefig('Counter_Sigmoid_Confusion_Matrix_Testing.png')
     # plt.show()
-
     print('correct guesses in testing = ', correct_guesses)
     print('incorrect guesses in testing = ', incorrect_guesses)
     with open(document_name,'a') as f:
@@ -780,6 +762,7 @@ def test_length():
     with open(document_name,'a') as f:
         f.write('////////////////////////////////////////\n')
         f.write('TEST LENGTH SET\n')
+
     with torch.no_grad():
         for i in range(num_samples):
             class_category = y_length[i]
@@ -787,20 +770,22 @@ def test_length():
             input_sentence = X_length[i]
             input_tensor = X_length_encoded[i]
 
-            opening_bracket_count = torch.tensor(0, dtype=torch.float32)
-            closing_bracket_count = torch.tensor(0, dtype=torch.float32)
-            surplus_closing_bracket_count = torch.tensor(0, dtype=torch.float32)
+            opening_bracket_count = torch.tensor([0], dtype=torch.float32)
+            closing_bracket_count = torch.tensor([0], dtype=torch.float32)
+            surplus_closing_bracket_count = torch.tensor([0], dtype=torch.float32)
 
             # print('////////////////////////////////////////////')
             # print('Test sample = ', input_sentence)
+
             # with open(document_name,'a') as f:
             #     f.write('////////////////////////////////////////////\n')
             #     f.write('Test sample '+input_sentence+'\n')
 
             for j in range(input_tensor.size()[0]):
                 # print('input tensor[j][0] = ', input_tensor[j][0])
+
                 # with open(document_name, 'a') as f:
-                #     f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
+                    # f.write('input tensor[j][0] = '+str(input_tensor[j][0])+'\n')
 
                 output_tensor, opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count = model(
                     input_tensor[j][0], opening_bracket_count, closing_bracket_count, surplus_closing_bracket_count)
@@ -811,10 +796,10 @@ def test_length():
                 # print('output = ',output_tensor)
 
                 # with open(document_name,'a') as f:
-                #     f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
-                #     f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
-                #     f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
-                #     f.write('output = '+str(output_tensor)+'\n')
+                    # f.write('opening bracket count = '+str(opening_bracket_count)+'\n')
+                    # f.write('closing bracket count = '+str(closing_bracket_count)+'\n')
+                    # f.write('surplus closing bracket count = '+str(surplus_closing_bracket_count)+'\n')
+                    # f.write('output = '+str(output_tensor)+'\n')
 
             guess, guess_i = classFromOutput(output_tensor)
             class_i = labels.index(class_category)
